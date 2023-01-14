@@ -66,8 +66,7 @@ class NautaSession(override var cookies: MutableMap<String, String> = mutableMap
     /*
         Loguea una cuenta en el portal
      */
-    fun login(userName: String, password: String, cookies: MutableMap<String, String>) {
-        this.cookies = cookies
+    fun login(userName: String, password: String) {
         val response = connect(
             actionLogin!!,
             mapOf(
@@ -89,7 +88,7 @@ class NautaSession(override var cookies: MutableMap<String, String> = mutableMap
     /*
         Cierra la conexion abierta previamente con esta misma sesion
      */
-    fun logout(userName: String, cookies: MutableMap<String, String>) {
+    fun logout(userName: String) {
         val response = connect(
             "https://secure.etecsa.net:8443/LogoutServlet?",
             mapOf(
@@ -99,14 +98,12 @@ class NautaSession(override var cookies: MutableMap<String, String> = mutableMap
                 "wlanuserip" to wlanUserIP!!
             )
         ).execute()
-        println(response.parse())
     }
 
     /*
         Obtiene el tiempo disponible en la cuenta
      */
-    fun getUserTime(userName: String, cookies: MutableMap<String, String>): String {
-        this.cookies = cookies
+    fun getUserTime(userName: String): String {
         val response = connect(
             "https://secure.etecsa.net:8443/EtecsaQueryServlet",
             mapOf(
