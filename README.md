@@ -69,7 +69,7 @@ fun downloadCaptcha(path: String, captchaImage: ByteArray) {
         </thead>
         <tr>
             <td>init</td>
-            <td>Crea la sesión donde se guardan las cookies y datos</td>
+            <td>Inicializa la sesión donde se guardan las cookies y datos</td>
         </tr>
         <tr>
             <td>login</td>
@@ -97,7 +97,7 @@ fun downloadCaptcha(path: String, captchaImage: ByteArray) {
         </tr>
         <tr>
             <td>getLasts</td>
-            <td>Devuelve las últimas <b>large</b> <b>action</b> realizadas, donde <b>large</b> es la cantidad Ex: 5 y <b>action</b> las operaciones realizadas Ex: <b>UserPortal.ACTION_CONNECTIONS</b> (las <b>action</b> disponibles son: <b>UserPortal.ACTION_CONNECTIONS</b>, <b>UserPortal.ACTION_RECHARGES</b>, <b>UserPortal.ACTION_TRANSFER</b> y <b>UserPortal.ACTION_QUOTE_FUNDS</b>, esta última solo para nauta hogar)</td>
+            <td>Devuelve las últimas <b>large</b> <b>action</b> realizadas, donde <b>large</b> es la cantidad Ex: 5 y <b>action</b> las operaciones realizadas Ex: <b>Operation.CONNECTIONS</b> (las <b>action</b> disponibles son: <b>Operation.CONNECTIONS</b>, <b>Operation.RECHARGES</b>, <b>Operation.TRANSFERS</b> y <b>Operation.QUOTES_FUNDS</b>, esta última solo para nauta hogar)</td>
         </tr>
         <tr>
             <td>getConnections</td>
@@ -112,7 +112,7 @@ fun downloadCaptcha(path: String, captchaImage: ByteArray) {
             <td>Devuelve las transferencias realizadas en el mes especificado incluyendo el año (<b>año-mes</b>: 2022-03)</td>
         </tr>
     </table>
-</detalis>
+</details>
 
 <details>
     <summary>Nauta Hogar</summary>
@@ -258,7 +258,7 @@ __Nota__: Los `métodos` y `propiedades` disponibles para `Nauta` también lo es
 
 ```kotlin
 fun main() {
-    nautaCli = NautaSession()
+    val nautaCli = NautaSession()
     nautaCli.init()
     nautaCli.login(
         "user@nauta.com.cu",
