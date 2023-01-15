@@ -13,6 +13,12 @@ import java.util.*
 import javax.net.ssl.SSLHandshakeException
 
 class UserPortalSession(override var cookies: MutableMap<String, String> = mutableMapOf()) : Session {
+    /*
+        Crea una sesion para comunicarse con el portal de usuario de nauta.
+        Esta sesion contiene toda la informacion que se puede extraer, asi
+        como las funciones para extraerlos.
+     */
+    
     // Constantes privadas de la session
     private var urlBase = "https://www.portal.nauta.cu/"
     private val urls = mutableMapOf(
@@ -36,6 +42,8 @@ class UserPortalSession(override var cookies: MutableMap<String, String> = mutab
         Operation.TRANSFERS_SUMMARY to "useraaa/transfer_detail_summary/",
         Operation.TRANSFERS_LIST to "useraaa/transfer_detail_list/"
     )
+
+    // Claves de informacion del usuario recuperable del portal
     private val attrs = mapOf(
         Attribute.USER_NAME to "usuario",
         Attribute.ACCOUNT_TYPE to "tipo de cuenta",
@@ -89,6 +97,10 @@ class UserPortalSession(override var cookies: MutableMap<String, String> = mutab
     var debt: String? = null
 
     private fun throwIfError(response: Response) {
+        /*
+            Lanza una exepcion si el codigo de estado de la respuesta enviada desde
+            el portal es diferente de la esperada (200)
+         */ 
         if (response.statusCode() != 200) {
             throw OperationException(
                 "Fallo al realizar la operación: ${response.statusCode()} - ${response.statusMessage()}"
@@ -98,6 +110,9 @@ class UserPortalSession(override var cookies: MutableMap<String, String> = mutab
 
     @kotlin.jvm.Throws(CommunicationException::class)
     private fun getCsrf(action: Operation) {
+        /*
+            Recupera el token csrf del portal segun la operacion a realizar
+         */
         try {
             urls[action]?.let {
                 if (cookies.isEmpty()) {
@@ -116,12 +131,17 @@ class UserPortalSession(override var cookies: MutableMap<String, String> = mutab
         }
     }
 
+    // Comprueba si hay alguna session inicializada
     private val isSessionInitialized: Boolean
         get() {
             return csrf != null
         }
 
     fun getCaptchaAsBytes(): ByteArray {
+        /*
+            Descarga y devuelve la imagen captcha en una variable
+            de tipo bytes
+         */
         try {
             return connect("https://www.portal.nauta.cu/captcha/?")
                 .ignoreContentType(true)
@@ -139,6 +159,7 @@ class UserPortalSession(override var cookies: MutableMap<String, String> = mutab
     }
 
     fun init() {
+        // Inicializa la sesion
         getCsrf(Operation.LOGIN)
     }
 
@@ -148,6 +169,7 @@ class UserPortalSession(override var cookies: MutableMap<String, String> = mutab
         captchaCode: String,
         cookies: MutableMap<String, String>
     ) {
+        // Loguea a un usuario en el portal
         if (isSessionInitialized) {
             this.cookies = cookies
             val soup = connect(
@@ -165,6 +187,10 @@ class UserPortalSession(override var cookies: MutableMap<String, String> = mutab
     }
 
     fun loadUserInfo(cookies: MutableMap<String, String>) {
+        /*
+            Carga y actualiza la informacion del usuario ofrecida por
+            el portal
+         */
         this.cookies = cookies
         val soup = urls[Operation.LOAD_USER_INFO]?.let {
             connect("${urlBase}${it}").get()
@@ -174,6 +200,7 @@ class UserPortalSession(override var cookies: MutableMap<String, String> = mutab
     }
 
     fun recharge(rechargeCode: String, cookies: MutableMap<String, String>) {
+        // Recarga la cuenta logueada
         getCsrf(Operation.RECHARGE)
         postAction(
             cookies,
@@ -192,6 +219,7 @@ class UserPortalSession(override var cookies: MutableMap<String, String> = mutab
         password: String,
         cookies: MutableMap<String, String>
     ) {
+        // Transfiere saldo desde la cuenta logueada a otra
         getCsrf(Operation.TRANSFER)
         postAction(
             cookies,
@@ -211,6 +239,9 @@ class UserPortalSession(override var cookies: MutableMap<String, String> = mutab
         newPassword: String,
         cookies: MutableMap<String, String>
     ) {
+        /*
+            Cambia la contrase;a de acceso de la cuenta logueada
+         */
         getCsrf(Operation.CHANGE_PASSWORD)
         postAction(
             cookies,
@@ -230,6 +261,9 @@ class UserPortalSession(override var cookies: MutableMap<String, String> = mutab
         newPassword: String,
         cookies: MutableMap<String, String>
     ) {
+        /*
+            Cambia la contrase;a de acceso al correo asociado a la cuenta logueada
+         */
         getCsrf(Operation.CHANGE_EMAIL_PASSWORD)
         postAction(
             cookies,
@@ -249,6 +283,12 @@ class UserPortalSession(override var cookies: MutableMap<String, String> = mutab
         large: Int,
         cookies: MutableMap<String, String>
     ): List<Any> {
+        /*
+            Obtiene y devuelve las ultimas operaciones realizzadas por el
+            usuario logueado.
+            Las operaciones devueltas seran las especificadas al igual que la
+            cantidad de ellas que se devuelven.
+         */
         val cal = Calendar.getInstance()
         cal.time = Date()
         var year = cal.get(Calendar.YEAR)
@@ -298,6 +338,10 @@ class UserPortalSession(override var cookies: MutableMap<String, String> = mutab
         month: Int,
         cookies: MutableMap<String, String>
     ): List<Connection> {
+        /*
+            Recupera y devuelve las conexiones realizadas con la cuenta
+            logueada en el a;o-mes especificados
+         */
         val connections = mutableListOf<Connection>()
         getAction(year, month, Operation.CONNECTIONS, cookies)?.let {
             for (tr in it) {
@@ -322,6 +366,10 @@ class UserPortalSession(override var cookies: MutableMap<String, String> = mutab
         month: Int,
         cookies: MutableMap<String, String>
     ): List<Recharge> {
+        /*
+            Recupera y devuelve las recargas realizadas con la cuenta
+            logueada en el a;o-mes especificados
+         */
         val recharges = mutableListOf<Recharge>()
         getAction(year, month, Operation.RECHARGES, cookies)?.let {
             for (tr in it) {
@@ -344,6 +392,10 @@ class UserPortalSession(override var cookies: MutableMap<String, String> = mutab
         month: Int,
         cookies: MutableMap<String, String>
     ): List<Transfer> {
+        /*
+            Recupera y devuelve las transferencias realizadas con la cuenta
+            logueada en el a;o-mes especificados
+         */
         val transfers = mutableListOf<Transfer>()
         getAction(year, month, Operation.TRANSFERS, cookies)?.let {
             for (tr in it) {
@@ -365,6 +417,10 @@ class UserPortalSession(override var cookies: MutableMap<String, String> = mutab
         month: Int,
         cookies: MutableMap<String, String>
     ): List<QuoteFund> {
+        /*
+            Recupera y devuelve las getQuotesFund realizadas con la cuenta
+            logueada en el a;o-mes especificados
+         */
         val quotesFund = mutableListOf<QuoteFund>()
         getAction(year, month, Operation.QUOTES_FUNDS, cookies)?.let {
             for (tr in it) {
@@ -389,6 +445,9 @@ class UserPortalSession(override var cookies: MutableMap<String, String> = mutab
         action: Operation,
         cookies: MutableMap<String, String>
     ): Elements? {
+        /*
+            Recupera las acciones especificadas en el tiempo especificado
+         */
         this.cookies = cookies
 
         val listsTypes = mapOf(
@@ -449,6 +508,9 @@ class UserPortalSession(override var cookies: MutableMap<String, String> = mutab
         data: Map<String, String>,
         action: Operation
     ): Document? {
+        /*
+            Realiza peticiones post al portal
+         */
         this.cookies = cookies
         val soup = urls[action]?.let {
             connect("${urlBase}${it}", data).post()
@@ -457,6 +519,9 @@ class UserPortalSession(override var cookies: MutableMap<String, String> = mutab
     }
 
     private fun updateAttrs(soup: Document) {
+        /*
+            Actualiza la informacion de la cuenta logueada
+         */
 
         userName = getAttr(Attribute.USER_NAME, soup)
         blockingDate = getAttr(Attribute.BLOCKING_DATE, soup)
@@ -484,6 +549,10 @@ class UserPortalSession(override var cookies: MutableMap<String, String> = mutab
     }
 
     private fun getAttr(attr: Attribute, soup: Document): String? {
+        /*
+            Recibe la clave de la informacion del usuario que quiere recuperar
+            y devielve el valor proporcionado por el portal.
+         */
         val index: Int = if (attr == Attribute.BLOCKING_DATE_HOME || attr == Attribute.DATE_OF_ELIMINATION_HOME) {
             1
         } else {
