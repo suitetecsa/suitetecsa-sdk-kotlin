@@ -1,0 +1,29 @@
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
+plugins {
+    kotlin("jvm") version "1.7.21"
+}
+
+group = "cu.suitetecsa"
+version = "1.0"
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
+
+dependencies {
+    implementation("org.jsoup:jsoup:1.15.4")
+    implementation("junit:junit:4.13.2")
+    testImplementation(kotlin("test"))
+    testImplementation("io.mockk:mockk:1.13.4")
+    testImplementation("com.google.code.gson:gson:2.10.1")
+}
+
+tasks.test {
+    useJUnitPlatform()
+}
+
+tasks.withType<KotlinCompile> {
+    kotlinOptions.jvmTarget = "1.8"
+}
