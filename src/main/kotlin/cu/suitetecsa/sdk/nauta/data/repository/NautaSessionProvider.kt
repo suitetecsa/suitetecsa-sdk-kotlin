@@ -1,18 +1,26 @@
-package cu.suitetecsa.sdk.nauta.core
+package cu.suitetecsa.sdk.nauta.data.repository
 
-import cu.suitetecsa.sdk.nauta.LoginException
-import cu.suitetecsa.sdk.nauta.OperationException
-import cu.suitetecsa.sdk.nauta.service.SessionProvider
-import cu.suitetecsa.sdk.nauta.utils.Portal
+import cu.suitetecsa.sdk.nauta.core.exceptions.LoginException
+import cu.suitetecsa.sdk.nauta.core.exceptions.OperationException
+import cu.suitetecsa.sdk.nauta.core.Portal
+import cu.suitetecsa.sdk.nauta.core.throwExceptionOnFailure
+import cu.suitetecsa.sdk.nauta.data.network.SessionProvider
 import org.jsoup.Connection
 
-class NautaSession : SessionProvider {
+class NautaSessionProvider : SessionProvider {
     private val uCookies = mutableMapOf<String, String>()
     private val cCookies = mutableMapOf<String, String>()
     override val userCookies: MutableMap<String, String>
         get() = uCookies
     override val connectCookies: MutableMap<String, String>
         get() = cCookies
+    override var csrf: String? = null
+    override var userName: String? = null
+    override var csrfHw: String? = null
+    override var wlanUserIp: String? = null
+    override var attributeUUID: String? = null
+    override var actionLogin: String? = null
+    override var isNautaHome: Boolean = false
 
     override fun get(
         portalManager: Portal,

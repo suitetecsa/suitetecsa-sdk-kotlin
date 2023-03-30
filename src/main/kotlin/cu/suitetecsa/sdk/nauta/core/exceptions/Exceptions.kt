@@ -1,6 +1,7 @@
-package cu.suitetecsa.sdk.nauta
+package cu.suitetecsa.sdk.nauta.core.exceptions
 
 class PreLoginException(message: String): Exception(message)
+class NotLoggedIn(message: String): Exception(message)
 class LoginException(message: String): Exception(message)
 class LogoutException(message: String): Exception(message)
 class GetInfoException(message: String): Exception(message)

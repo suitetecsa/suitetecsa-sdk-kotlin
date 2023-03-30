@@ -1,4 +1,4 @@
-package cu.suitetecsa.sdk.nauta.utils
+package cu.suitetecsa.sdk.nauta.core
 
 val userAgent: String
     get() = "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:97.0) Gecko/20100101 Firefox/97.0"
@@ -12,7 +12,7 @@ val connectDomain: String
     get() = "secure.etecsa.net"
 val urlBase: Map<Portal, String>
     get() = mapOf(
-        Portal.CONNECT to "https://${connectDomain}:8443/",
+        Portal.CONNECT to "https://$connectDomain:8443/",
         Portal.USER to "https://www.portal.nauta.cu/"
     )
 val portalsUrls: Map<Portal, Map<Action, Any>>

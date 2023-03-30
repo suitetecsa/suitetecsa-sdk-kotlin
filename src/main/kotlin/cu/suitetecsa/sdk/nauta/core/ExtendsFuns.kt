@@ -1,7 +1,5 @@
 package cu.suitetecsa.sdk.nauta.core
 
-import cu.suitetecsa.sdk.nauta.GetInfoException
-import cu.suitetecsa.sdk.nauta.utils.Portal
 import org.jsoup.Connection
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document

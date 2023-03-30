@@ -1,0 +1,38 @@
+[
+  {
+    "date": {
+      "date": {
+        "year": 2023,
+        "month": 3,
+        "day": 10
+      },
+      "time": {
+        "hour": 12,
+        "minute": 12,
+        "second": 33,
+        "nano": 0
+      }
+    },
+    "import": 200.0,
+    "channel": "PV ETECSA",
+    "type": "Efectivo"
+  },
+  {
+    "date": {
+      "date": {
+        "year": 2023,
+        "month": 3,
+        "day": 16
+      },
+      "time": {
+        "hour": 19,
+        "minute": 41,
+        "second": 35,
+        "nano": 0
+      }
+    },
+    "import": 250.0,
+    "channel": "Transfermóvil",
+    "type": "Efectivo"
+  }
+]

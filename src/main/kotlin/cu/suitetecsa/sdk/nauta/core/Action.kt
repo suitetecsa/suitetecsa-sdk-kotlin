@@ -1,4 +1,4 @@
-package cu.suitetecsa.sdk.nauta.utils
+package cu.suitetecsa.sdk.nauta.core
 
 enum class Action {
     LOGIN,

@@ -1,17 +1,42 @@
-package cu.suitetecsa.sdk.nauta.service
+package cu.suitetecsa.sdk.nauta.data.network
 
-import cu.suitetecsa.sdk.nauta.utils.Portal
-import cu.suitetecsa.sdk.nauta.utils.headers
-import cu.suitetecsa.sdk.nauta.utils.userAgent
+import cu.suitetecsa.sdk.nauta.core.Portal
+import cu.suitetecsa.sdk.nauta.core.headers
+import cu.suitetecsa.sdk.nauta.core.userAgent
 import org.jsoup.Connection
 import org.jsoup.Connection.Response
 import org.jsoup.Jsoup
 
 interface SessionProvider {
 
+    // Cookies for the session of the nauta user portal
     val userCookies: MutableMap<String, String>
+    // Cookies for de nauta captive portal session
     val connectCookies: MutableMap<String, String>
 
+    // Session attribute for the nauta user portal
+    var csrf: String?
+    // Session attributes for de nauta's captive portal
+    var userName: String?
+    var csrfHw: String?
+    var wlanUserIp: String?
+    var attributeUUID: String?
+    var actionLogin: String?
+
+    // Variables for the nauta captive portal session
+    val isLoggedIn: Boolean
+        get() {
+            return !attributeUUID.isNullOrEmpty()
+        }
+
+    // Variables for the nauta user portal session
+    val isUserSessionInitialized: Boolean
+        get() {
+            return !csrf.isNullOrEmpty()
+        }
+    var isNautaHome: Boolean
+
+    // Get request method
     fun get(
         portalManager: Portal,
         url: String,
@@ -20,7 +45,10 @@ interface SessionProvider {
         timeout: Int? = null
     ): Response
 
+    // Post request method
     fun post(portalManager: Portal, url: String, data: Map<String, String>): Response
+
+    // Create a Connection object allowing you to keep the session
     fun connection(
         portalManager: Portal,
         url: String,
