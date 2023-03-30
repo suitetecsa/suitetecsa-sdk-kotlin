@@ -17,11 +17,6 @@ jobs:
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
-
-    - name: Set up JDK
-      uses: actions/setup-java@v1
-      with:
-        java-version: '11'
         
     - name: Setup Kotlin
       uses: fwilhe2/setup-kotlin@0.2.0
