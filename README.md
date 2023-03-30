@@ -1,4 +1,4 @@
-# KotLibSuitETECSA
+# suitetecsa-sdk-kotlin
 
 ## Una libreria escrita en Kotlin para SuitETECSA
 
