@@ -3,8 +3,8 @@ package cu.suitetecsa.sdk.nauta.domain.service
 import cu.suitetecsa.sdk.nauta.core.exceptions.LoadInfoException
 import cu.suitetecsa.sdk.nauta.core.exceptions.LoginException
 import cu.suitetecsa.sdk.nauta.core.exceptions.NotLoggedIn
-import cu.suitetecsa.sdk.nauta.domain.model.*
 import cu.suitetecsa.sdk.nauta.data.network.NautaProvider
+import cu.suitetecsa.sdk.nauta.domain.model.*
 import java.time.LocalDate
 
 class NautaClient(private val provider: NautaProvider) {
@@ -17,6 +17,18 @@ class NautaClient(private val provider: NautaProvider) {
 
     val captchaImage: ByteArray
         get() = provider.getCaptcha()
+
+    val remainingTime: String
+        get() = provider.getRemainingTime()
+
+    val connectInformation: Map<String, Any>
+        get() {
+            if (userName.isNullOrEmpty() || password.isNullOrEmpty()) throw LoginException("username and password are required")
+            return provider.getInformationConnect(userName!!, password!!)
+        }
+
+    val userInformation
+        get() = if (isLoggedInUser) provider.getInformationUser() else throw NotLoggedIn("You are not logged in")
 
     var dataSession: Map<String, String>
         get() = provider.getDataSession()
@@ -50,23 +62,19 @@ class NautaClient(private val provider: NautaProvider) {
         return userInfo
     }
 
-    fun getConnectInformation(): Map<String, Any> {
-        if (userName.isNullOrEmpty() || password.isNullOrEmpty()) throw LoginException("username and password are required")
-        return provider.getInformationConnect(userName!!, password!!)
-    }
-
-    fun getUserInformation() = if (isLoggedInUser) provider.getInformationUser() else throw NotLoggedIn("You are not logged in")
-
-    fun toUpBalance(rechargeCode: String) = if (isLoggedInUser) provider.toUpBalance(rechargeCode) else throw NotLoggedIn("You are not logged in")
+    fun toUpBalance(rechargeCode: String) =
+        if (isLoggedInUser) provider.toUpBalance(rechargeCode) else throw NotLoggedIn("You are not logged in")
 
     fun transferBalance(amount: Float, destinationAccount: String) {
         if (!isLoggedInUser) throw NotLoggedIn("You are not logged in")
-        if (!destinationAccount.endsWith("@nauta.com.cu") || destinationAccount.endsWith("@nauta.co.cu"))
-            throw IllegalArgumentException("The destination account must end in @nauta.com.cu or @nauta.co.cu")
+        if (!destinationAccount.endsWith("@nauta.com.cu") || destinationAccount.endsWith("@nauta.co.cu")) throw IllegalArgumentException(
+            "The destination account must end in @nauta.com.cu or @nauta.co.cu"
+        )
         provider.transferFunds(amount, password!!, destinationAccount)
     }
 
-    fun payNautaHome(amount: Float) = if (isLoggedInUser) provider.transferFunds(amount, password!!) else throw NotLoggedIn("You are not logged in")
+    fun payNautaHome(amount: Float) =
+        if (isLoggedInUser) provider.transferFunds(amount, password!!) else throw NotLoggedIn("You are not logged in")
 
     fun changePassword(newPassword: String) {
         if (!isLoggedInUser) throw NotLoggedIn("You are not logged in")
@@ -92,7 +100,9 @@ class NautaClient(private val provider: NautaProvider) {
         return provider.getConnectionsSummary(year, month)
     }
 
-    fun getConnections(year: Int, month: Int, connectionsSummary: ConnectionsSummary? = null, large: Int = 0, reversed: Boolean = false): List<Connection> {
+    fun getConnections(
+        year: Int, month: Int, connectionsSummary: ConnectionsSummary? = null, large: Int = 0, reversed: Boolean = false
+    ): List<Connection> {
         if (!isLoggedInUser) throw NotLoggedIn("You are not logged in")
         return if ((year <= 0 || month <= 0) && (connectionsSummary != null && connectionsSummary.count >= 0)) {
             provider.getConnections(0, 0, connectionsSummary, large, reversed)
@@ -114,7 +124,9 @@ class NautaClient(private val provider: NautaProvider) {
         return provider.getRechargesSummary(year, month)
     }
 
-    fun getRecharges(year: Int, month: Int, rechargesSummary: RechargesSummary? = null, large: Int = 0, reversed: Boolean = false): List<Recharge> {
+    fun getRecharges(
+        year: Int, month: Int, rechargesSummary: RechargesSummary? = null, large: Int = 0, reversed: Boolean = false
+    ): List<Recharge> {
         if (!isLoggedInUser) throw NotLoggedIn("You are not logged in")
         return if ((year == 0 || month == 0) && (rechargesSummary != null && rechargesSummary.count >= 0)) {
             provider.getRecharges(0, 0, rechargesSummary, large, reversed)
@@ -136,7 +148,9 @@ class NautaClient(private val provider: NautaProvider) {
         return provider.getTransfersSummary(year, month)
     }
 
-    fun getTransfers(year: Int, month: Int, connectionsSummary: TransfersSummary? = null, large: Int = 0, reversed: Boolean = false): List<Transfer> {
+    fun getTransfers(
+        year: Int, month: Int, connectionsSummary: TransfersSummary? = null, large: Int = 0, reversed: Boolean = false
+    ): List<Transfer> {
         if (!isLoggedInUser) throw NotLoggedIn("You are not logged in")
         return if ((year == 0 || month == 0) && (connectionsSummary != null && connectionsSummary.count >= 0)) {
             provider.getTransfers(0, 0, connectionsSummary, large, reversed)
@@ -158,7 +172,9 @@ class NautaClient(private val provider: NautaProvider) {
         return provider.getQuotesPaidSummary(year, month)
     }
 
-    fun getQuotesPaid(year: Int, month: Int, quotesPaidSummary: QuotesPaidSummary? = null, large: Int = 0, reversed: Boolean = false): List<QuotePaid> {
+    fun getQuotesPaid(
+        year: Int, month: Int, quotesPaidSummary: QuotesPaidSummary? = null, large: Int = 0, reversed: Boolean = false
+    ): List<QuotePaid> {
         if (!isLoggedInUser) throw NotLoggedIn("You are not logged in")
         return if ((year == 0 || month == 0) && (quotesPaidSummary != null && quotesPaidSummary.count >= 0)) {
             provider.getQuotesPaid(0, 0, quotesPaidSummary, large, reversed)
