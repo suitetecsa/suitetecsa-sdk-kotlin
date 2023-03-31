@@ -199,7 +199,7 @@ class NautaClientTest {
     @Test
     fun getUserInformation() {
         login()
-        val user = client.getUserInformation()
+        val user = client.userInformation
         assertEquals(user, gson.fromJson(userInfoJson, NautaUser::class.java))
     }
 
