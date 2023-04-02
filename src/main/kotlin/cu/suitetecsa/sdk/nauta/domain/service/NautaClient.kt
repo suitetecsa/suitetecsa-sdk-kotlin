@@ -3,11 +3,11 @@ package cu.suitetecsa.sdk.nauta.domain.service
 import cu.suitetecsa.sdk.nauta.core.exceptions.LoadInfoException
 import cu.suitetecsa.sdk.nauta.core.exceptions.LoginException
 import cu.suitetecsa.sdk.nauta.core.exceptions.NotLoggedIn
-import cu.suitetecsa.sdk.nauta.data.network.NautaProvider
+import cu.suitetecsa.sdk.nauta.data.repository.NautaScrapper
 import cu.suitetecsa.sdk.nauta.domain.model.*
 import java.time.LocalDate
 
-class NautaClient(private val provider: NautaProvider) {
+class NautaClient(private val provider: NautaScrapper) {
     private var userName: String? = null
     private var password: String? = null
     private var isLoggedInUser: Boolean = false
@@ -29,6 +29,12 @@ class NautaClient(private val provider: NautaProvider) {
 
     val userInformation
         get() = if (isLoggedInUser) provider.getInformationUser() else throw NotLoggedIn("You are not logged in")
+
+    val isLoggedIn
+        get() = provider.isLoggedIn
+
+    val isConnected
+        get() = provider.isConnected
 
     var dataSession: Map<String, String>
         get() = provider.getDataSession()

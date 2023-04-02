@@ -1,4 +1,4 @@
-package cu.suitetecsa.sdk.nauta.data.network
+package cu.suitetecsa.sdk.nauta.data.repository
 
 import cu.suitetecsa.sdk.nauta.core.Portal
 import cu.suitetecsa.sdk.nauta.core.headers
@@ -7,7 +7,7 @@ import org.jsoup.Connection
 import org.jsoup.Connection.Response
 import org.jsoup.Jsoup
 
-interface SessionProvider {
+interface NautaSession {
 
     // Cookies for the session of the nauta user portal
     val userCookies: MutableMap<String, String>

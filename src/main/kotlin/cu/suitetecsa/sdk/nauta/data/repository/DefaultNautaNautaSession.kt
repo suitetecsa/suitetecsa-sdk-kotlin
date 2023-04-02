@@ -4,10 +4,9 @@ import cu.suitetecsa.sdk.nauta.core.exceptions.LoginException
 import cu.suitetecsa.sdk.nauta.core.exceptions.OperationException
 import cu.suitetecsa.sdk.nauta.core.Portal
 import cu.suitetecsa.sdk.nauta.core.throwExceptionOnFailure
-import cu.suitetecsa.sdk.nauta.data.network.SessionProvider
 import org.jsoup.Connection
 
-class NautaSessionProvider : SessionProvider {
+class DefaultNautaNautaSession : NautaSession {
     private val uCookies = mutableMapOf<String, String>()
     private val cCookies = mutableMapOf<String, String>()
     override val userCookies: MutableMap<String, String>

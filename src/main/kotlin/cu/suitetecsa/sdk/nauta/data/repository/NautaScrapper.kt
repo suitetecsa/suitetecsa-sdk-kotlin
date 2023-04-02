@@ -1,10 +1,12 @@
-package cu.suitetecsa.sdk.nauta.data.network
+package cu.suitetecsa.sdk.nauta.data.repository
 
 import cu.suitetecsa.sdk.nauta.domain.model.*
 import org.jsoup.nodes.Document
 
-interface NautaProvider {
+interface NautaScrapper {
     val isNautaHome: Boolean
+    val isLoggedIn: Boolean
+    val isConnected: Boolean
 
     fun getDataSession(): Map<String, String>
     fun loadDataSession(dataSession: Map<String, String>)

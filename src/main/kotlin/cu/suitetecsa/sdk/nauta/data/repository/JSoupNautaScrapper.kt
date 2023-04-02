@@ -6,8 +6,6 @@ import cu.suitetecsa.sdk.nauta.core.Portal
 import cu.suitetecsa.sdk.nauta.core.exceptions.*
 import cu.suitetecsa.sdk.nauta.core.portalsUrls
 import cu.suitetecsa.sdk.nauta.core.urlBase
-import cu.suitetecsa.sdk.nauta.data.network.NautaProvider
-import cu.suitetecsa.sdk.nauta.data.network.SessionProvider
 import cu.suitetecsa.sdk.nauta.domain.model.*
 import cu.suitetecsa.sdk.nauta.domain.util.parseDateTime
 import cu.suitetecsa.sdk.nauta.domain.util.priceStringToFloat
@@ -20,7 +18,7 @@ import org.jsoup.select.Elements
 import java.time.LocalDate
 import kotlin.math.ceil
 
-class JSoupNautaProvider(private val session: SessionProvider) : NautaProvider {
+class JSoupNautaScrapper(private val session: NautaSession) : NautaScrapper {
     private val userPortal = Portal.USER
     private val connectPortal = Portal.CONNECT
 
@@ -188,6 +186,13 @@ class JSoupNautaProvider(private val session: SessionProvider) : NautaProvider {
 
     override val isNautaHome: Boolean
         get() = session.isNautaHome
+    override val isLoggedIn: Boolean
+        get() = session.isLoggedIn
+    override val isConnected: Boolean
+        get() {
+            val response = session.get(Portal.CONNECT, makeUrl(Action.CHECK_CONNECTION, Portal.CONNECT))
+            return !response.url().toString().contains(connectDomain)
+        }
 
     override fun getDataSession(): Map<String, String> {
         if (!session.isLoggedIn) throw GetInfoException("You are not logged in")

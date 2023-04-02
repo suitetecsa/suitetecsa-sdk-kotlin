@@ -5,9 +5,8 @@ import cu.suitetecsa.sdk.nauta.core.exceptions.LoadInfoException
 import cu.suitetecsa.sdk.nauta.core.Portal
 import cu.suitetecsa.sdk.nauta.domain.*
 import cu.suitetecsa.sdk.nauta.domain.model.*
-import cu.suitetecsa.sdk.nauta.domain.service.NautaClient
-import cu.suitetecsa.sdk.nauta.data.repository.JSoupNautaProvider
-import cu.suitetecsa.sdk.nauta.data.network.SessionProvider
+import cu.suitetecsa.sdk.nauta.data.repository.JSoupNautaScrapper
+import cu.suitetecsa.sdk.nauta.data.repository.NautaSession
 import io.mockk.every
 import io.mockk.mockk
 import org.jsoup.Connection
@@ -18,7 +17,7 @@ import java.io.BufferedReader
 import java.io.InputStreamReader
 import kotlin.test.assertFailsWith
 
-class SessionTest: SessionProvider {
+class NautaSessionTest: NautaSession {
     private val cCookies = mutableMapOf<String, String>()
     private val uCookies = mutableMapOf<String, String>()
     private val responseMockk = mockk<Connection.Response>()
@@ -124,8 +123,8 @@ class SessionTest: SessionProvider {
 }
 
 class NautaClientTest {
-    private val session = SessionTest()
-    private val provider = JSoupNautaProvider(session)
+    private val session = NautaSessionTest()
+    private val provider = JSoupNautaScrapper(session)
     private val client = NautaClient(provider)
     private val gson = Gson()
 
