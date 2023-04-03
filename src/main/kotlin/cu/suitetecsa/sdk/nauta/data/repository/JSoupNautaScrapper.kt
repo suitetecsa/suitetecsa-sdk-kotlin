@@ -188,6 +188,8 @@ class JSoupNautaScrapper(private val session: NautaSession) : NautaScrapper {
         get() = session.isNautaHome
     override val isLoggedIn: Boolean
         get() = session.isLoggedIn
+    override val isUserLoggedIn: Boolean
+        get() = session.isUserLoggedIn
     override val isConnected: Boolean
         get() {
             val response = session.get(Portal.CONNECT, makeUrl(Action.CHECK_CONNECTION, Portal.CONNECT))

@@ -6,6 +6,7 @@ import org.jsoup.nodes.Document
 interface NautaScrapper {
     val isNautaHome: Boolean
     val isLoggedIn: Boolean
+    val isUserLoggedIn: Boolean
     val isConnected: Boolean
 
     fun getDataSession(): Map<String, String>

@@ -34,6 +34,10 @@ interface NautaSession {
         get() {
             return !csrf.isNullOrEmpty()
         }
+    val isUserLoggedIn: Boolean
+        get() {
+            return !userName.isNullOrEmpty()
+        }
     var isNautaHome: Boolean
 
     // Get request method

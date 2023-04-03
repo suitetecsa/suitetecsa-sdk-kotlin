@@ -33,6 +33,9 @@ class NautaClient(private val provider: NautaScrapper) {
     val isLoggedIn
         get() = provider.isLoggedIn
 
+    val isUserLoggedIn: Boolean
+        get() = provider.isUserLoggedIn
+
     val isConnected
         get() = provider.isConnected
 
