@@ -1,293 +1,153 @@
-# KotLibSuitETECSA
+# suitetecsa-sdk-kotlin
 
-## Una libreria escrita en Kotlin para SuitETECSA
+`suitetecs-sdk_kotlin` es una herramienta diseñada para  interactuar con los servicios de [ETECSA](https://www.etecsa.cu/). La librería utiliza técnicas de scrapping para acceder a los portales de [acceso a internet ](https://secure.etecsa.net:8443/)y de [usuario](https://www.portal.nauta.cu/) de Nauta. Implementa funciones para todas las operaciones disponibles en ambos portales, y ofrece soporte para Nauta Hogar.
 
-KotLibSuitETECSA fue creada con el objetivo de ofrecer una API que interactúe con los servicios ofrecidos por [ETECSA](https://www.etecsa.cu/), para facilitar el desarrollo de aplicaciones Kotlin dedicadas a la gestión de estos mediante los portales [de usuario](https://www.portal.nauta.cu/) y [cautivo](https://secure.etecsa.net:8443/) de nauta, ahorrándoles tiempo, esfuerzos, neuronas y código a los desarrolladores.
+Todas las funcionalidades están disponibles desde una única clase, `NautaClient`, lo que permite interactuar con ambos portales a la vez, permitiendo obtener datos de manera rápida y eficiente, ahorrando tiempo y esfuerzos a la hora de desarrollar aplicaciones que busquen gestionar los servicios de [ETECSA](https://www.etecsa.cu/). Además, incluye funcionalidades útiles como la generación de contraseñas y la compartición de sesión.
 
-KotLibSuitETECSA está aún en fase de desarrollo activa, por lo que aún no implementa algunas funciones
-necesarias para la gestión de cuentas asociadas al servicio Nauta Hogar. Se me ha hecho difícil la implementación de dichas funciones, ya que no poseo este servicio.
+Se han seguido los principios SOLID en su desarrollo, lo que garantiza que es fácil de entender, modificar y mantener. La mayoría de la información devuelta por las funciones son objetos, lo que simplifica el trabajo de las aplicaciones que lo utilizan.
 
-### Usando UserPortalSession
+Al ser un proyecto open-source, se valoran y se reciben contribuciones de la comunidad de desarrolladores/as.
+
+## Funciones implementadas
+
+- [x] [Secure Etecsa](https://secure.etecsa.net:8443/)
+  
+  - [x] Iniciar sesión.
+  - [x] Cerrar sesión.
+  - [x] Obtener el tiempo disponible en la cuenta.
+  - [x] Obtener la información de la cuenta.
+
+- [x] [Portal de Usuario](https://www.portal.nauta.cu/)
+  
+  - [x] Iniciar sesión.
+  
+  - [x] Obtener información de la cuenta.
+  
+  - [x] Recargar la cuenta.
+  
+  - [x] Transferir saldo a otra cuenta nauta.
+  
+  - [x] Transferir saldo para pago de cuota (`solo para cuentas Nauta Hogar`).
+  
+  - [x] Cambiar la contraseña de la cuenta de acceso.
+  
+  - [x] Cambiar la contraseña de la cuenta de correo asociada.
+  
+  - [x] Obtener las conexiones realizadas en el periódo `año-mes` especificado.
+  
+  - [x] Obtener las recargas realizadas en el periódo `año-mes` especificado.
+  
+  - [x] Obtener las transferencias realizadas en el periódo `año-mes` especificado.
+  
+  - [x] Obtener los pagos de cuotas realizados en el periódo `año-mes` especificado (`solo para cuentas Nauta Hogar`).
+
+# Uso
+
+Importa `suitetecsa-sdk-kotlin` en tu proyecto
+
+```groovy
+implementation("cu.suitetecsa:suitetecsa-core:0.1")
+```
+
+Importal `NautaSession`, `JsoupNautaProvider` y `NautaClient`
 
 ```kotlin
-fun main() {
-    val userPortalCli = UserPortalSession()
-    userPortalCli.init()
-    downloadCaptcha("captcha_image.png", userPortalCli.getCaptchaAsBytes())
-    val captchaCode: String
-    println("Introduzca el código de la imagen captcha: ")
+import cu.suitetecsa.sdk.nauta.data.repository.JSoupNautaProvider
+import cu.suitetecsa.sdk.nauta.data.repository.NautaSessionProvider
+import cu.suitetecsa.sdk.nauta.domain.service.NautaClient
+```
+
+Crea las instancias necesarias o inyectalas
+
+```kotlin
+    val session = NautaSessionProvider()
+    val provider = JSoupNautaProvider(session)
+    val client = NautaClient(provider)
+```
+
+Establece las credenciales que usaras para iniciar sesion
+
+```kotlin
+    client.setCredentials("user.name@nauta.com.cu", "somePassword")
+```
+
+Conectate a internet desde la wifi o Nauta Hogar
+
+```kotlin
+    // Para hacer login en el portal cautivo
+    client.connect()
+    // Obtener el tiempo restante
+    val remainingTime = client.remainingTime
+```
+
+Interactua con el portal de usuario
+
+```kotlin
+    // Para hacer login en el portal de usuario
+    downloadCaptcha("captchaImage.png", client.captchaImage)
+    print("Introduzca el código de la imagen captcha: ")
     val keyMap = Scanner(System.`in`)
-    captchaCode = keyMap.nextLine()
-    userPortalCli.login(
-        "user.name@nauta.com.cu",
-        "password",
-        captchaCode,
-        userPortalCli.cookies
-    )
-    println(userPortalCli.userName)
-    println(userPortalCli.credit)
-    println(userPortalCli.accountType)
-
-    val lastsConnections = userPortalCli.getLasts(
-        Operation.CONNECTIONS,
-        5,
-        userPortalCli.cookies
-    ) as List<Connection>
-    for (connection in lastsConnections) {
-        println(connection.startSession)
-        println(connection.endSession)
-        println(connection.import_)
-    }
-}
-
-fun downloadCaptcha(path: String, captchaImage: ByteArray) {
-    var out: ByteArrayOutputStream? = null
-    BufferedInputStream(ByteArrayInputStream(captchaImage)).use { `in` ->
-        out = ByteArrayOutputStream()
-        val buf = ByteArray(1024)
-        var n: Int
-        while (-1 != `in`.read(buf).also { n = it }) {
-            out!!.write(buf, 0, n)
-        }
-        out!!.close()
-    }
-    val response = out!!.toByteArray()
-    FileOutputStream(path).use { fos -> fos.write(response) }
-}
+    val captchaCode = keyMap.nextLine()
+    val user: NautaUser = client.login(captchaCode)
 ```
 
-## Funciones y propiedades de UserPortalSession
-
-<details>
-    <summary>Nauta</summary>
-    <table>
-        <thead>
-            <tr>
-                <td>Función</td>
-                <td>Descripción</td>
-            </tr>
-        </thead>
-        <tr>
-            <td>init</td>
-            <td>Inicializa la sesión donde se guardan las cookies y datos</td>
-        </tr>
-        <tr>
-            <td>login</td>
-            <td>Loguea al usuario en el portal y carga la información de la cuenta</td>
-        </tr>
-        <tr>
-            <td>loadUserInfo</td>
-            <td>Recupera y devuelve la información de la cuenta logueada</td>
-        </tr>
-        <tr>
-            <td>recharge</td>
-            <td>Recarga la cuenta logueada</td>
-        </tr>
-        <tr>
-            <td>transfer</td>
-            <td>Transfiere saldo a otra cuenta nauta</td>
-        </tr>
-        <tr>
-            <td>changePassword</td>
-            <td>Cambia la contraseña de la cuenta logueada</td>
-        </tr>
-        <tr>
-            <td>changeEmailPassword</td>
-            <td>Cambia la contraseña de la cuenta de correo asociada a la cuenta logueada</td>
-        </tr>
-        <tr>
-            <td>getLasts</td>
-            <td>Devuelve las últimas <b>large</b> <b>action</b> realizadas, donde <b>large</b> es la cantidad Ex: 5 y <b>action</b> las operaciones realizadas Ex: <b>Operation.CONNECTIONS</b> (las <b>action</b> disponibles son: <b>Operation.CONNECTIONS</b>, <b>Operation.RECHARGES</b>, <b>Operation.TRANSFERS</b> y <b>Operation.QUOTES_FUNDS</b>, esta última solo para nauta hogar)</td>
-        </tr>
-        <tr>
-            <td>getConnections</td>
-            <td>Devuelve las conexiones realizadas en el mes especificado incluyendo el año (<b>año-mes</b>: 2022-03)</td>
-        </tr>
-        <tr>
-            <td>getRecharges</td>
-            <td>Devuelve las recargas realizadas en el mes especificado incluyendo el año (<b>año-mes</b>: 2022-03)</td>
-        </tr>
-        <tr>
-            <td>getTransfers</td>
-            <td>Devuelve las transferencias realizadas en el mes especificado incluyendo el año (<b>año-mes</b>: 2022-03)</td>
-        </tr>
-    </table>
-</details>
-
-<details>
-    <summary>Nauta Hogar</summary>
-    <table>
-        <thead>
-            <tr>
-                <td>Función</td>
-                <td>Descripción</td>
-            </tr>
-        </thead>
-        <tr>
-            <td>transferToQuote</td>
-            <td>Transfiere saldo a la cuota de nauta hogar (<b>aún sin implementar</b>)</td>
-        </tr>
-        <tr>
-            <td>payToDebtWithCredit</td>
-            <td>Paga deuda de nauta hogar con saldo (<b>aún sin implementar</b>)</td>
-        </tr>
-        <tr>
-            <td>payToDebtWithQuoteFund</td>
-            <td>Paga deuda de nauta hogar con fondo de cuota (<b>aún sin implementar</b>)</td>
-        </tr>
-        <tr>
-            <td>getQuotesFund</td>
-            <td>Devuelve los fondos de cuota realizados en el mes especificado incluyendo el año (<b>año-mes</b>: 2022-03)</td>
-        </tr>
-    </table>
-</details>
-
-### Propiedades
-
-<details>
-    <summary>Nauta</summary>
-    <table>
-        <thead>
-            <tr>
-                <td>Propiedad</td>
-                <td>Dato devuelto</td>
-            </tr>
-        </thead>
-        <tr>
-            <td>userName</td>
-            <td>Nombre de usuario de la cuenta logueada.</td>
-        </tr>
-        <tr>
-            <td>blockingDate</td>
-            <td>Fecha de bloqueo.</td>
-        </tr>
-        <tr>
-            <td>dateOfElimination</td>
-            <td>Fecha de eliminación.</td>
-        </tr>
-        <tr>
-            <td>accountType</td>
-            <td>Tipo de cuenta.</td>
-        </tr>
-        <tr>
-            <td>serviceType</td>
-            <td>Tipo de servicio.</td>
-        </tr>
-        <tr>
-            <td>credit</td>
-            <td>Saldo.</td>
-        </tr>
-        <tr>
-            <td>time</td>
-            <td>Tiempo disponible.</td>
-        </tr>
-        <tr>
-            <td>mailAccount</td>
-            <td>Cuenta de correo asociada.</td>
-        </tr>
-    </table>
-</details>
-
-<details>
-    <summary>Nauta Hogar</summary>
-    <table>
-        <thead>
-            <tr>
-                <td>Propiedad</td>
-                <td>Dato devuelto</td>
-            </tr>
-        </thead>
-        <tr>
-            <td>offer</td>
-            <td>Oferta</td>
-        </tr>
-        <tr>
-            <td>monthlyFee</td>
-            <td>Cuota mensual</td>
-        </tr>
-        <tr>
-            <td>downloadSpeeds</td>
-            <td>Velocidad de bajada</td>
-        </tr>
-        <tr>
-            <td>uploadSpeeds</td>
-            <td>Velocidad de subida</td>
-        </tr>
-        <tr>
-            <td>phone</td>
-            <td>Teléfono</td>
-        </tr>
-        <tr>
-            <td>linkIdentifiers</td>
-            <td>Identificador del enlace</td>
-        </tr>
-        <tr>
-            <td>linkStatus</td>
-            <td>Estado del enlace</td>
-        </tr>
-        <tr>
-            <td>activationDate</td>
-            <td>Fecha de activación</td>
-        </tr>
-        <tr>
-            <td>blockingDateHome</td>
-            <td>Fecha de bloqueo</td>
-        </tr>
-        <tr>
-            <td>dateOfEliminationHome</td>
-            <td>Fecha de eliminación</td>
-        </tr>
-        <tr>
-            <td>quoteFund</td>
-            <td>Fondo de cuota</td>
-        </tr>
-        <tr>
-            <td>voucher</td>
-            <td>Bono</td>
-        </tr>
-        <tr>
-            <td>debt</td>
-            <td>Deuda</td>
-        </tr>
-    </table>
-</details>
-
-__Nota__: Los `métodos` y `propiedades` disponibles para `Nauta` también lo están para `Nauta Hogar`.
-
-## Usando NautaClient
+Otras funciones
 
 ```kotlin
-fun main() {
-    val nautaCli = NautaSession()
-    nautaCli.init()
-    nautaCli.login(
-        "user@nauta.com.cu",
-        "password"
-    )
-    println(nautaCli.getUserTime(
-        "user@nauta.com.cu"
-    ))
-    nautaCli.logout(
-        "user@nauta.com.cu"
-    )
-}
+    // Funciones del portal cautivo
+    client.connectInformation
+    client.disconnect()
+
+    // Funciones del portal de usuario
+    client.userInformation
+    client.toUpBalance("rechargeCode")
+    client.transferBalance(25f, "destinationAccount")
+    client.payNautaHome(300f)
+    client.getConnections(2023, 3)
+    client.getRecharges(2023, 3)
+    client.getTransfers(2023, 3)
+    client.getQuotesPaid(2023, 3)
 ```
 
-## Funciones y propiedades de UserPortalClient
+# Contribución
 
-### Funciones
+¡Gracias por tu interés en colaborar con nuestro proyecto! Nos encanta recibir contribuciones de la comunidad y valoramos mucho tu tiempo y esfuerzo.
 
-* init: Inicializa la session donde se guardan las cookies y datos
-* login: Loguea al usuario en el portal
-* logout: Cierra la sesión abierta
-* getUserTime: Devuelve el tiempo disponible en la cuenta
+## Cómo contribuir
 
-## Contribuir
+Si estás interesado en contribuir, por favor sigue los siguientes pasos:
 
-__IMPORTANTE__: KotLibSuitETESA necesita compatibilidad con nauta hogar.
+1. Revisa las issues abiertas para ver si hay alguna tarea en la que puedas ayudar.
+2. Si no encuentras ninguna issue que te interese, por favor abre una nueva issue explicando el problema o la funcionalidad que te gustaría implementar. Asegúrate de incluir toda la información necesaria para que otros puedan entender el problema o la funcionalidad que estás proponiendo.
+3. Si ya tienes una issue asignada o si has decidido trabajar en una tarea existente, por favor crea un fork del repositorio y trabaja en una nueva rama (`git checkout -b nombre-de-mi-rama`).
+4. Cuando hayas terminado de trabajar en la tarea, crea un pull request explicando los cambios que has realizado y asegurándote de que el código cumple con nuestras directrices de estilo y calidad.
+5. Espera a que uno de nuestros colaboradores revise el pull request y lo apruebe o sugiera cambios adicionales.
 
-Todas las contribuciones son bienvenidas. Puedes ayudar trabajando en uno de los issues existentes. Clona el repo, crea una rama para el issue que estés trabajando y cuando estés listo crea un Pull Request.
+## Directrices de contribución
 
-También puedes contribuir difundiendo esta herramienta entre tus amigos y en tus redes. Mientras más grande sea la comunidad más sólido será el proyecto.
+Por favor, asegúrate de seguir nuestras directrices de contribución para que podamos revisar y aprobar tus cambios de manera efectiva:
 
-Si te gusta el proyecto dale una estrella para que otros lo encuentren más fácilmente.
+- Sigue los estándares de codificación y estilo de nuestro proyecto.
+- Asegúrate de que el código nuevo esté cubierto por pruebas unitarias.
+- Documenta cualquier cambio que hagas en la documentación del proyecto.
+
+¡Gracias de nuevo por tu interés en contribuir! Si tienes alguna pregunta o necesitas ayuda, no dudes en ponerte en contacto con nosotros en la sección de issues o enviándonos un mensaje directo.
+
+## Licencia
+
+Este proyecto está licenciado bajo la Licencia MIT. Esto significa que tienes permiso para utilizar, copiar, modificar, fusionar, publicar, distribuir, sublicenciar y/o vender copias del software, y para permitir que las personas a las que se les proporcione el software lo hagan, con sujeción a las siguientes condiciones:
+
+- Se debe incluir una copia de la licencia en todas las copias o partes sustanciales del software.
+- El software se proporciona "tal cual", sin garantía de ningún tipo, expresa o implícita, incluyendo pero no limitado a garantías de comerciabilidad, aptitud para un propósito particular y no infracción. En ningún caso los autores o titulares de la licencia serán responsables de cualquier reclamo, daño u otra responsabilidad, ya sea en una acción de contrato, agravio o de otra manera, que surja de, fuera de o en conexión con el software o el uso u otros tratos en el software.
+
+Puedes encontrar una copia completa de la Licencia MIT en el archivo LICENSE que se incluye en este repositorio.
+
+## Contacto
+
+Si tienes alguna pregunta o comentario sobre el proyecto, no dudes en ponerte en contacto conmigo a través de los siguientes medios:
+
+- Correo electrónico: [lesclaz95@gmail.com](mailto:lesclaz95@gmail.com)
+- Twitter: [@lesclaz](https://twitter.com/lesclaz)
+- Telegram: [@lesclaz](https://t.me/lesclaz)
+
+Estaré encantado de escuchar tus comentarios y responder tus preguntas. ¡Gracias por tu interés en mi proyecto!
