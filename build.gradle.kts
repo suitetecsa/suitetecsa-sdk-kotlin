@@ -2,10 +2,11 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("jvm") version "1.7.21"
+    `maven-publish`
 }
 
 group = "cu.suitetecsa"
-version = "0.1.2"
+version = "0.1.3"
 
 repositories {
     mavenCentral()
