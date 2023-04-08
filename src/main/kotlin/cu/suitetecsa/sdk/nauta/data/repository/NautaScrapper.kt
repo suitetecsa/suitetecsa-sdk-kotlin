@@ -8,6 +8,7 @@ interface NautaScrapper {
     val isLoggedIn: Boolean
     val isUserLoggedIn: Boolean
     val isConnected: Boolean
+    val isUnderCaptivePortal: Boolean
 
     fun getDataSession(): Map<String, String>
     fun loadDataSession(dataSession: Map<String, String>)

@@ -8,7 +8,7 @@ import org.jsoup.select.Elements
 
 fun Connection.Response.throwExceptionOnFailure(exc: Class<out Exception>, msg: String) {
     val exceptionConstructor = exc.getDeclaredConstructor(String::class.java)
-    if (this.statusCode() != 200) {
+    if (this.statusCode() != 200 && this.statusCode() != 302) {
         throw exceptionConstructor.newInstance(
             "$msg :: ${this.statusMessage()}"
         )

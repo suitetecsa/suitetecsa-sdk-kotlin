@@ -50,7 +50,7 @@ class NautaClient(private val provider: NautaScrapper) {
     }
 
     fun setCredentials(userName: String, password: String) {
-        if (!userName.endsWith("@nauta.com.cu") || userName.endsWith("@nauta.co.cu")) throw LoadInfoException("Enter a valid username")
+        if (!userName.endsWith("@nauta.com.cu") && !userName.endsWith("@nauta.co.cu")) throw LoadInfoException("Enter a valid username")
         if (password.length < 8) throw LoadInfoException("Enter a valid password")
         this.userName = userName
         this.password = password

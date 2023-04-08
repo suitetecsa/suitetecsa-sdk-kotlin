@@ -84,14 +84,13 @@ class JSoupNautaScrapper(private val session: NautaSession) : NautaScrapper {
     }
 
     private fun getCsrf(action: Action, soup: Document? = null): String {
-        val soup = soup ?: actionGet(
+        return (soup ?: actionGet(
             portalManager = userPortal,
             url = makeUrl(action, userPortal),
             exc = GetInfoException::class.java,
             msg = "Fail to obtain csrf token",
             searchHtmlErrors = true
-        )
-        return soup.selectFirst("input[name=csrf]")!!.attr("value")
+        )).selectFirst("input[name=csrf]")!!.attr("value")
     }
 
     private fun getInputs(formSoup: Element): Map<String, String> {
@@ -161,29 +160,6 @@ class JSoupNautaScrapper(private val session: NautaSession) : NautaScrapper {
         return rows
     }
 
-    private fun getCurrentYearMonth(): () -> Pair<Int, Int> {
-        val currentDate = LocalDate.now()
-        var year = currentDate.year
-        val month = currentDate.monthValue
-
-        var firstCall = true
-        var previousMonth = 0
-
-        return {
-            if (firstCall) {
-                firstCall = false
-                previousMonth = month
-                Pair(year, month)
-            } else {
-                if (previousMonth > 1) previousMonth-- else {
-                    previousMonth = 12
-                    year--
-                }
-                Pair(year, previousMonth)
-            }
-        }
-    }
-
     override val isNautaHome: Boolean
         get() = session.isNautaHome
     override val isLoggedIn: Boolean
@@ -193,7 +169,12 @@ class JSoupNautaScrapper(private val session: NautaSession) : NautaScrapper {
     override val isConnected: Boolean
         get() {
             val response = session.get(Portal.CONNECT, makeUrl(Action.CHECK_CONNECTION, Portal.CONNECT))
-            return !response.url().toString().contains(connectDomain)
+            return !response.body().contains(connectDomain)
+        }
+    override val isUnderCaptivePortal: Boolean
+        get() {
+            val response = session.get(Portal.CONNECT, makeUrl(Action.CHECK_CONNECTION, Portal.CONNECT))
+            return response.body().contains(connectDomain)
         }
 
     override fun getDataSession(): Map<String, String> {
@@ -239,13 +220,13 @@ class JSoupNautaScrapper(private val session: NautaSession) : NautaScrapper {
             Jsoup.parse(session.get(connectPortal, makeUrl(Action.CHECK_CONNECTION, connectPortal)).body())
                 .selectFirst("form[action]")
         val landingData = landingForm?.let { getInputs(it) }
-        val formAction = landingForm?.let { it.attr("action") }
+        val formAction = landingForm?.attr("action")
         val response = formAction?.let { landingData?.let { it1 -> session.post(connectPortal, it, it1) } }
         response?.cookies()?.forEach { (key, value) -> session.connectCookies[key] = value }
-        val loginForm = Jsoup.parse(response?.body() ?: "").selectFirst("form#formulario")
+        val loginForm = Jsoup.parse(response?.body() ?: "").selectFirst("form.form")
         val loginData = loginForm?.let { getInputs(it) }
-        session.csrfHw = loginData?.get("CSRFHW")
         session.wlanUserIp = loginData?.get("wlanuserip")
+        session.csrfHw = loginData?.get("CSRFHW")
         if (loginForm != null) {
             session.actionLogin = loginForm.attr("action")
         }
@@ -299,14 +280,13 @@ class JSoupNautaScrapper(private val session: NautaSession) : NautaScrapper {
     }
 
     override fun getInformationUser(soup: Document?): NautaUser {
-        val soup = soup ?: (actionGet(
+        val attrs = (soup ?: (actionGet(
             userPortal,
             makeUrl(Action.LOAD_USER_INFORMATION, userPortal),
             LoadInfoException::class.java,
             "Fail to obtain the user information",
             true
-        ))
-        val attrs = soup.selectFirst(".z-depth-1")!!.select(".m6")
+        ))).selectFirst(".z-depth-1")!!.select(".m6")
         return NautaUser(
             attrs[0].selectFirst("p")!!.text().trim(),
             attrs[1].selectFirst("p")!!.text().trim(),
@@ -333,6 +313,7 @@ class JSoupNautaScrapper(private val session: NautaSession) : NautaScrapper {
     }
 
     override fun connect(userName: String, password: String) {
+        if (isConnected) throw LoginException("You are connected")
         if (session.actionLogin.isNullOrEmpty()) init()
         if (userName.isEmpty() || password.isEmpty()) throw LoginException("username and password are required")
         val response = session.post(connectPortal,

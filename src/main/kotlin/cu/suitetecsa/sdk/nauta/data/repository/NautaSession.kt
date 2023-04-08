@@ -69,7 +69,8 @@ interface NautaSession {
                 userCookies
             }
         }
-        var connection = Jsoup.connect(url).userAgent(userAgent).headers(headers).ignoreContentType(ignoreContentType)
+        var connection = Jsoup.connect(url).ignoreContentType(ignoreContentType)
+        if (portalManager == Portal.USER) connection = connection.userAgent(userAgent).headers(headers)
         if (data != null) connection = connection.data(data)
         if (cookies.isNotEmpty()) connection = connection.cookies(cookies)
         if (timeout != null) connection = connection.timeout(timeout)
