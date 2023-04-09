@@ -1,3 +1,3 @@
 
-rootProject.name = "suitetecsa-sdk-kotlin"
+rootProject.name = "suitetecsa-core"
 

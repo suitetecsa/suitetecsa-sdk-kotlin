@@ -5,8 +5,17 @@ plugins {
     `maven-publish`
 }
 
-group = "com.github.suitetecsa"
-version = "0.1.4"
+group = "cu.suitetecsa"
+version = "0.1.5"
+
+publishing {
+    publications {	// Configure el paquete de salida publicado, un proyecto puede tener múltiples salidas, pero solo una es
+        create<MavenPublication>("suitetecsa-core") {
+            from(components["java"])
+        }
+    }
+}
+
 
 repositories {
     mavenCentral()
