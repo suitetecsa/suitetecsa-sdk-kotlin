@@ -1,6 +1,8 @@
 # suitetecsa-sdk-kotlin
 
-`suitetecs-sdk_kotlin` es una herramienta diseñada para  interactuar con los servicios de [ETECSA](https://www.etecsa.cu/). La librería utiliza técnicas de scrapping para acceder a los portales de [acceso a internet ](https://secure.etecsa.net:8443/)y de [usuario](https://www.portal.nauta.cu/) de Nauta. Implementa funciones para todas las operaciones disponibles en ambos portales, y ofrece soporte para Nauta Hogar.
+[![](https://jitpack.io/v/suitetecsa/suitetecsa-sdk-kotlin.svg)](https://jitpack.io/#suitetecsa/suitetecsa-sdk-kotlin)
+
+`suitetecs-sdk-kotlin` es una herramienta diseñada para  interactuar con los servicios de [ETECSA](https://www.etecsa.cu/). La librería utiliza técnicas de scrapping para acceder a los portales de [acceso a internet ](https://secure.etecsa.net:8443/)y de [usuario](https://www.portal.nauta.cu/) de Nauta. Implementa funciones para todas las operaciones disponibles en ambos portales, y ofrece soporte para Nauta Hogar.
 
 Todas las funcionalidades están disponibles desde una única clase, `NautaClient`, lo que permite interactuar con ambos portales a la vez, permitiendo obtener datos de manera rápida y eficiente, ahorrando tiempo y esfuerzos a la hora de desarrollar aplicaciones que busquen gestionar los servicios de [ETECSA](https://www.etecsa.cu/). Además, incluye funcionalidades útiles como la generación de contraseñas y la compartición de sesión.
 
@@ -46,23 +48,23 @@ Al ser un proyecto open-source, se valoran y se reciben contribuciones de la com
 Importa `suitetecsa-sdk-kotlin` en tu proyecto
 
 ```groovy
-implementation("cu.suitetecsa:suitetecsa-core:0.1")
+implementation("com.github.suitetecsa:suitetecsa-sdk-kotlin:0.1.5")
 ```
 
 Importal `NautaSession`, `JsoupNautaProvider` y `NautaClient`
 
 ```kotlin
-import cu.suitetecsa.sdk.nauta.data.repository.JSoupNautaProvider
-import cu.suitetecsa.sdk.nauta.data.repository.NautaSessionProvider
+import cu.suitetecsa.sdk.nauta.data.repository.JSoupNautaSrapper
+import cu.suitetecsa.sdk.nauta.data.repository.DefaultNautaSession
 import cu.suitetecsa.sdk.nauta.domain.service.NautaClient
 ```
 
 Crea las instancias necesarias o inyectalas
 
 ```kotlin
-    val session = NautaSessionProvider()
-    val provider = JSoupNautaProvider(session)
-    val client = NautaClient(provider)
+    val session = DefaultNautaSession()
+    val scrapper = JSoupNautaSrapper(session)
+    val client = NautaClient(scrapper)
 ```
 
 Establece las credenciales que usaras para iniciar sesion
