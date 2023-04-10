@@ -62,9 +62,9 @@ import cu.suitetecsa.sdk.nauta.domain.service.NautaClient
 Crea las instancias necesarias o inyectalas
 
 ```kotlin
-    val session = NautaSessionProvider()
-    val provider = JSoupNautaProvider(session)
-    val client = NautaClient(provider)
+    val session = DefaultNautaSession()
+    val scrapper = JSoupNautaSrapper(session)
+    val client = NautaClient(scrapper)
 ```
 
 Establece las credenciales que usaras para iniciar sesion
