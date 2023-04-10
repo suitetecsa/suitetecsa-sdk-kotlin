@@ -2,7 +2,7 @@
 
 [![](https://jitpack.io/v/suitetecsa/suitetecsa-sdk-kotlin.svg)](https://jitpack.io/#suitetecsa/suitetecsa-sdk-kotlin)
 
-`suitetecs-sdk_kotlin` es una herramienta diseñada para  interactuar con los servicios de [ETECSA](https://www.etecsa.cu/). La librería utiliza técnicas de scrapping para acceder a los portales de [acceso a internet ](https://secure.etecsa.net:8443/)y de [usuario](https://www.portal.nauta.cu/) de Nauta. Implementa funciones para todas las operaciones disponibles en ambos portales, y ofrece soporte para Nauta Hogar.
+`suitetecs-sdk-kotlin` es una herramienta diseñada para  interactuar con los servicios de [ETECSA](https://www.etecsa.cu/). La librería utiliza técnicas de scrapping para acceder a los portales de [acceso a internet ](https://secure.etecsa.net:8443/)y de [usuario](https://www.portal.nauta.cu/) de Nauta. Implementa funciones para todas las operaciones disponibles en ambos portales, y ofrece soporte para Nauta Hogar.
 
 Todas las funcionalidades están disponibles desde una única clase, `NautaClient`, lo que permite interactuar con ambos portales a la vez, permitiendo obtener datos de manera rápida y eficiente, ahorrando tiempo y esfuerzos a la hora de desarrollar aplicaciones que busquen gestionar los servicios de [ETECSA](https://www.etecsa.cu/). Además, incluye funcionalidades útiles como la generación de contraseñas y la compartición de sesión.
 
