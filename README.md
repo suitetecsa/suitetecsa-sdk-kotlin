@@ -54,8 +54,8 @@ implementation("com.github.suitetecsa:suitetecsa-sdk-kotlin:0.1.5")
 Importal `NautaSession`, `JsoupNautaProvider` y `NautaClient`
 
 ```kotlin
-import cu.suitetecsa.sdk.nauta.data.repository.JSoupNautaProvider
-import cu.suitetecsa.sdk.nauta.data.repository.NautaSessionProvider
+import cu.suitetecsa.sdk.nauta.data.repository.JSoupNautaSrapper
+import cu.suitetecsa.sdk.nauta.data.repository.DefaultNautaSession
 import cu.suitetecsa.sdk.nauta.domain.service.NautaClient
 ```
 
