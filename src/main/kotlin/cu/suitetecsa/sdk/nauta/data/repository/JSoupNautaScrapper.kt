@@ -298,7 +298,7 @@ class JSoupNautaScrapper(private val session: NautaSession) : NautaScrapper {
             attrs[7].selectFirst("p")!!.text().trim(),
             if (attrs.size > 8) attrs[8].selectFirst("p")!!.text().trim() else null,
             if (attrs.size > 8) attrs[9].selectFirst("p")!!.text().trim() else null,
-            if (attrs.size > 7) attrs[10].selectFirst("p")!!.text().trim() else null,
+            if (attrs.size > 8) attrs[10].selectFirst("p")!!.text().trim() else null,
             if (attrs.size > 8) attrs[11].selectFirst("p")!!.text().trim() else null,
             if (attrs.size > 8) attrs[12].selectFirst("p")!!.text().trim() else null,
             if (attrs.size > 8) attrs[13].selectFirst("p")!!.text().trim() else null,
