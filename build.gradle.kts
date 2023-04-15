@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "cu.suitetecsa"
-version = "0.1.5"
+version = "0.1.6"
 
 publishing {
     publications {	// Configure el paquete de salida publicado, un proyecto puede tener múltiples salidas, pero solo una es
