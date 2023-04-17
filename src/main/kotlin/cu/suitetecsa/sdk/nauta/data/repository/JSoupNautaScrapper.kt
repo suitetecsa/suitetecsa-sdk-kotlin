@@ -188,7 +188,7 @@ class JSoupNautaScrapper(private val session: NautaSession) : NautaScrapper {
     }
 
     override fun loadDataSession(dataSession: Map<String, String>) {
-        val requiredKeys = setOf("username", "CSRFHW", "wlanuserip", "ATTRIBUTTE_UUID")
+        val requiredKeys = setOf("username", "CSRFHW", "wlanuserip", "ATTRIBUTE_UUID")
         if (!dataSession.keys.containsAll(requiredKeys)) throw LoadInfoException(
             "the keys [\"username\", \"CSRFHW\", \"wlanuserip\", \"ATTRIBUTE_UUID\"] are required"
         )

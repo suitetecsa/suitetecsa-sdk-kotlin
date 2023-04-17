@@ -48,7 +48,7 @@ Al ser un proyecto open-source, se valoran y se reciben contribuciones de la com
 Importa `suitetecsa-sdk-kotlin` en tu proyecto
 
 ```groovy
-implementation("com.github.suitetecsa:suitetecsa-sdk-kotlin:0.1.5")
+implementation("com.github.suitetecsa:suitetecsa-sdk-kotlin:0.1.7")
 ```
 
 Importal `NautaSession`, `JsoupNautaProvider` y `NautaClient`
