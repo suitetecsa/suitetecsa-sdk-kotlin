@@ -1,11 +1,7 @@
 package cu.suitetecsa.sdk.nauta.data.repository
 
 import cu.suitetecsa.sdk.nauta.core.*
-import cu.suitetecsa.sdk.nauta.core.Action
-import cu.suitetecsa.sdk.nauta.core.Portal
 import cu.suitetecsa.sdk.nauta.core.exceptions.*
-import cu.suitetecsa.sdk.nauta.core.portalsUrls
-import cu.suitetecsa.sdk.nauta.core.urlBase
 import cu.suitetecsa.sdk.nauta.domain.model.*
 import cu.suitetecsa.sdk.nauta.domain.util.parseDateTime
 import cu.suitetecsa.sdk.nauta.domain.util.priceStringToFloat
@@ -15,7 +11,6 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
-import java.time.LocalDate
 import kotlin.math.ceil
 
 class JSoupNautaScrapper(private val session: NautaSession) : NautaScrapper {
@@ -23,7 +18,11 @@ class JSoupNautaScrapper(private val session: NautaSession) : NautaScrapper {
     private val connectPortal = Portal.CONNECT
 
     private fun actionGet(
-        portalManager: Portal, url: String, exc: Class<out Exception>, msg: String, searchHtmlErrors: Boolean = false
+        portalManager: Portal,
+        url: String,
+        exc: Class<out Exception>,
+        msg: String,
+        searchHtmlErrors: Boolean = false
     ): Document {
         val response = session.get(portalManager, url)
         response.throwExceptionOnFailure(exc = exc, msg = msg)
@@ -143,9 +142,9 @@ class JSoupNautaScrapper(private val session: NautaSession) : NautaScrapper {
         val rows = mutableListOf<Element>()
         val totalPages = ceil(count.toDouble() / 14.0).toInt()
         var currentPage = if (reversed) totalPages else 1
-        val large = if (large == 0) count else large
+        val internalLarge = if (large == 0) count else large
 
-        while (rows.size < large && currentPage >= 1) {
+        while (rows.size < internalLarge && currentPage >= 1) {
             val page = if (currentPage != 1) currentPage else null
             val url = makeUrl(
                 action, userPortal, true, "list", yearMonthSelected, count, page
@@ -188,7 +187,7 @@ class JSoupNautaScrapper(private val session: NautaSession) : NautaScrapper {
     }
 
     override fun loadDataSession(dataSession: Map<String, String>) {
-        val requiredKeys = setOf("username", "CSRFHW", "wlanuserip", "ATTRIBUTTE_UUID")
+        val requiredKeys = setOf("username", "CSRFHW", "wlanuserip", "ATTRIBUTE_UUID")
         if (!dataSession.keys.containsAll(requiredKeys)) throw LoadInfoException(
             "the keys [\"username\", \"CSRFHW\", \"wlanuserip\", \"ATTRIBUTE_UUID\"] are required"
         )
@@ -316,7 +315,8 @@ class JSoupNautaScrapper(private val session: NautaSession) : NautaScrapper {
         if (isConnected) throw LoginException("You are connected")
         if (session.actionLogin.isNullOrEmpty()) init()
         if (userName.isEmpty() || password.isEmpty()) throw LoginException("username and password are required")
-        val response = session.post(connectPortal,
+        val response = session.post(
+            connectPortal,
             session.actionLogin!!,
             mapOf(
                 "CSRFHW" to session.csrfHw!!,
@@ -330,7 +330,8 @@ class JSoupNautaScrapper(private val session: NautaSession) : NautaScrapper {
     }
 
     override fun disconnect() {
-        val response = session.get(connectPortal,
+        val response = session.get(
+            connectPortal,
             makeUrl(Action.LOGOUT, connectPortal), mapOf(
                 "username" to session.userName!!,
                 "wlanuserip" to session.wlanUserIp!!,
@@ -346,7 +347,8 @@ class JSoupNautaScrapper(private val session: NautaSession) : NautaScrapper {
     override fun login(userName: String, password: String, captchaCode: String): NautaUser {
         if (!session.isUserSessionInitialized) throw LoginException("The session has not been initialized")
         if (captchaCode.isEmpty()) throw LoginException("The captcha code is required")
-        val soup = actionPost(userPortal,
+        val soup = actionPost(
+            userPortal,
             makeUrl(Action.LOGIN, userPortal), mapOf(
                 "csrf" to session.csrf!!,
                 "login_user" to userName,
@@ -362,10 +364,11 @@ class JSoupNautaScrapper(private val session: NautaSession) : NautaScrapper {
 
     override fun toUpBalance(rechargeCode: String) {
         if (!session.isUserSessionInitialized) throw LoginException("The session has not been initialized")
-        actionPost(userPortal,
+        actionPost(
+            userPortal,
             makeUrl(Action.RECHARGE, userPortal), mapOf(
                 "csrf" to getCsrf(Action.RECHARGE), "recharge_code" to rechargeCode, "btn_submit" to ""
-            ), RechargeException::class.java, "Fail to recharge the account balance"
+            ), RechargeException::class.java, "Fail to recharge the account balance", true
         )
     }
 
@@ -381,34 +384,41 @@ class JSoupNautaScrapper(private val session: NautaSession) : NautaScrapper {
             throw TransferFundsException("The destination account  is required. Your account are not associated to Nauta Home")
         }
         if (!destinationAccount.isNullOrEmpty()) data["id_cuenta"] = destinationAccount
-        actionPost(userPortal,
-            makeUrl(Action.TRANSFER, userPortal), data, TransferFundsException::class.java, "Fail to transfer funds"
+        actionPost(
+            userPortal,
+            makeUrl(Action.TRANSFER, userPortal),
+            data,
+            TransferFundsException::class.java,
+            "Fail to transfer funds",
+            true
         )
     }
 
     override fun changePassword(oldPassword: String, newPassword: String) {
         if (!session.isUserSessionInitialized) throw LoginException("The session has not been initialized")
-        actionPost(userPortal,
+        actionPost(
+            userPortal,
             makeUrl(Action.CHANGE_PASSWORD, userPortal), mapOf(
                 "csrf" to getCsrf(Action.CHANGE_PASSWORD),
                 "old_password" to oldPassword,
                 "new_password" to newPassword,
                 "repeat_new_password" to newPassword,
                 "btn_submit" to ""
-            ), ChangePasswordException::class.java, "Fail to change the password"
+            ), ChangePasswordException::class.java, "Fail to change the password", true
         )
     }
 
     override fun changeEmailPassword(oldPassword: String, newPassword: String) {
         if (!session.isUserSessionInitialized) throw LoginException("The session has not been initialized")
-        actionPost(userPortal,
+        actionPost(
+            userPortal,
             makeUrl(Action.CHANGE_EMAIL_PASSWORD, userPortal), mapOf(
                 "csrf" to getCsrf(Action.CHANGE_EMAIL_PASSWORD),
                 "old_password" to oldPassword,
                 "new_password" to newPassword,
                 "repeat_new_password" to newPassword,
                 "btn_submit" to ""
-            ), ChangePasswordException::class.java, "Fail to change the password"
+            ), ChangePasswordException::class.java, "Fail to change the password", true
         )
     }
 
