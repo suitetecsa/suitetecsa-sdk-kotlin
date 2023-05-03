@@ -1,11 +1,7 @@
 package cu.suitetecsa.sdk.nauta.data.repository
 
 import cu.suitetecsa.sdk.nauta.core.*
-import cu.suitetecsa.sdk.nauta.core.Action
-import cu.suitetecsa.sdk.nauta.core.Portal
 import cu.suitetecsa.sdk.nauta.core.exceptions.*
-import cu.suitetecsa.sdk.nauta.core.portalsUrls
-import cu.suitetecsa.sdk.nauta.core.urlBase
 import cu.suitetecsa.sdk.nauta.domain.model.*
 import cu.suitetecsa.sdk.nauta.domain.util.parseDateTime
 import cu.suitetecsa.sdk.nauta.domain.util.priceStringToFloat
@@ -15,7 +11,6 @@ import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
-import java.time.LocalDate
 import kotlin.math.ceil
 
 class JSoupNautaScrapper(private val session: NautaSession) : NautaScrapper {

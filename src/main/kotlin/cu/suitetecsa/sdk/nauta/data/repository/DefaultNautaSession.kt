@@ -1,8 +1,10 @@
 package cu.suitetecsa.sdk.nauta.data.repository
 
-import cu.suitetecsa.sdk.nauta.core.exceptions.OperationException
 import cu.suitetecsa.sdk.nauta.core.Portal
+import cu.suitetecsa.sdk.nauta.core.exceptions.OperationException
 import cu.suitetecsa.sdk.nauta.core.throwExceptionOnFailure
+import cu.suitetecsa.sdk.nauta.data.model.HttpResponse
+import cu.suitetecsa.sdk.nauta.data.model.ResultType
 import org.jsoup.Connection
 
 class DefaultNautaSession : NautaSession {
@@ -26,16 +28,41 @@ class DefaultNautaSession : NautaSession {
         params: Map<String, String>?,
         ignoreContentType: Boolean,
         timeout: Int?
-    ): Connection.Response {
-        val response =
-            connection(portalManager, url, params, ignoreContentType, timeout).method(Connection.Method.GET).execute()
-        response.throwExceptionOnFailure(OperationException::class.java, "Fail")
-        return response
+    ): ResultType<HttpResponse> {
+        return try {
+            val response =
+                connection(portalManager, url, params, ignoreContentType, timeout).method(Connection.Method.GET)
+                    .execute()
+            response.throwExceptionOnFailure(OperationException::class.java, "Fail")
+            ResultType.Success(
+                HttpResponse(
+                    statusCode = response.statusCode(),
+                    statusMassage = response.statusMessage(),
+                    content = response.bodyAsBytes(),
+                    cookies = response.cookies()
+                )
+            )
+        } catch (e: Exception) {
+            e.printStackTrace()
+            ResultType.Error(e)
+        }
     }
 
-    override fun post(portalManager: Portal, url: String, data: Map<String, String>): Connection.Response {
-        val response = connection(portalManager, url, data).method(Connection.Method.POST).execute()
-        response.throwExceptionOnFailure(OperationException::class.java, "Fail")
-        return response
+    override fun post(portalManager: Portal, url: String, data: Map<String, String>): ResultType<HttpResponse> {
+        return try {
+            val response = connection(portalManager, url, data).method(Connection.Method.POST).execute()
+            response.throwExceptionOnFailure(OperationException::class.java, "Fail")
+            ResultType.Success(
+                HttpResponse(
+                    statusCode = response.statusCode(),
+                    statusMassage = response.statusMessage(),
+                    content = response.bodyAsBytes(),
+                    cookies = response.cookies()
+                )
+            )
+        } catch (e: Exception) {
+            e.printStackTrace()
+            ResultType.Error(e)
+        }
     }
 }

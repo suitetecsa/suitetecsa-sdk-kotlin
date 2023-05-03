@@ -3,6 +3,8 @@ package cu.suitetecsa.sdk.nauta.domain.service
 import com.google.gson.Gson
 import cu.suitetecsa.sdk.nauta.core.exceptions.LoadInfoException
 import cu.suitetecsa.sdk.nauta.core.Portal
+import cu.suitetecsa.sdk.nauta.data.model.HttpResponse
+import cu.suitetecsa.sdk.nauta.data.model.ResultType
 import cu.suitetecsa.sdk.nauta.domain.*
 import cu.suitetecsa.sdk.nauta.domain.model.*
 import cu.suitetecsa.sdk.nauta.data.repository.JSoupNautaScrapper
@@ -79,7 +81,7 @@ class NautaSessionTest: NautaSession {
         params: Map<String, String>?,
         ignoreContentType: Boolean,
         timeout: Int?
-    ): Connection.Response {
+    ): ResultType<HttpResponse> {
         setUp()
         when (url) {
             "http://www.cubadebate.cu/" -> every { responseMockk.body() } returns landingHtml!!
@@ -104,7 +106,7 @@ class NautaSessionTest: NautaSession {
         return responseMockk
     }
 
-    override fun post(portalManager: Portal, url: String, data: Map<String, String>): Connection.Response {
+    override fun post(portalManager: Portal, url: String, data: Map<String, String>): ResultType<HttpResponse> {
         setUp()
         when (url) {
             "https://secure.etecsa.net:8443" -> every { responseMockk.body() } returns loginHtml!!

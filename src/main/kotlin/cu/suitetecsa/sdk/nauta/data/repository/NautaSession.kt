@@ -3,8 +3,9 @@ package cu.suitetecsa.sdk.nauta.data.repository
 import cu.suitetecsa.sdk.nauta.core.Portal
 import cu.suitetecsa.sdk.nauta.core.headers
 import cu.suitetecsa.sdk.nauta.core.userAgent
+import cu.suitetecsa.sdk.nauta.data.model.HttpResponse
+import cu.suitetecsa.sdk.nauta.data.model.ResultType
 import org.jsoup.Connection
-import org.jsoup.Connection.Response
 import org.jsoup.Jsoup
 
 interface NautaSession {
@@ -16,6 +17,7 @@ interface NautaSession {
 
     // Session attribute for the nauta user portal
     var csrf: String?
+
     // Session attributes for de nauta's captive portal
     var userName: String?
     var csrfHw: String?
@@ -47,10 +49,10 @@ interface NautaSession {
         params: Map<String, String>? = null,
         ignoreContentType: Boolean = false,
         timeout: Int? = null
-    ): Response
+    ): ResultType<HttpResponse>
 
     // Post request method
-    fun post(portalManager: Portal, url: String, data: Map<String, String>): Response
+    fun post(portalManager: Portal, url: String, data: Map<String, String>): ResultType<HttpResponse>
 
     // Create a Connection object allowing you to keep the session
     fun connection(
