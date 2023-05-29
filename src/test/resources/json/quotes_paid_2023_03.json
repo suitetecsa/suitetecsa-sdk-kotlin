@@ -1,18 +1,6 @@
 [
   {
-    "date": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 10
-      },
-      "time": {
-        "hour": 12,
-        "minute": 11,
-        "second": 36,
-        "nano": 0
-      }
-    },
+    "date": "Mar 10, 2023, 12:11:36 PM",
     "import": 300.0,
     "channel": "Oficina Comercial",
     "type": "PV Sala de Navegación MTC",

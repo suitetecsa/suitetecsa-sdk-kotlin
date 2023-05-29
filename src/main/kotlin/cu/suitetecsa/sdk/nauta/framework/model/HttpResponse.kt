@@ -1,4 +1,4 @@
-package cu.suitetecsa.sdk.nauta.data.model
+package cu.suitetecsa.sdk.nauta.framework.model
 
 class HttpResponse(
     val statusCode: Int,

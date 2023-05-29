@@ -6,7 +6,7 @@ import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
 import org.jsoup.select.Elements
 
-fun Connection.Response.throwExceptionOnFailure(exc: Class<out Exception>, msg: String) {
+internal fun Connection.Response.throwExceptionOnFailure(exc: Class<out Exception>, msg: String) {
     val exceptionConstructor = exc.getDeclaredConstructor(String::class.java)
     if (this.statusCode() != 200 && this.statusCode() != 302) {
         throw exceptionConstructor.newInstance(
@@ -15,7 +15,7 @@ fun Connection.Response.throwExceptionOnFailure(exc: Class<out Exception>, msg: 
     }
 }
 
-fun Document.throwExceptionOnFailure(exc: Class<out Exception>, msg: String, portalManager: Portal) {
+internal fun Document.throwExceptionOnFailure(exc: Class<out Exception>, msg: String, portalManager: Portal) {
     val exceptionConstructor = exc.getDeclaredConstructor(String::class.java)
     val errors = mutableListOf<String>()
         val lastScript = this.select("script[type='text/javascript']").last()
@@ -51,6 +51,9 @@ fun Document.throwExceptionOnFailure(exc: Class<out Exception>, msg: String, por
         }
 }
 
-operator fun Elements.component6(): Element {
+internal operator fun Elements.component6(): Element {
     return this[5]
 }
+
+fun String.toSeconds() =
+    this.split(":").map { it.toInt() }.fold(0) { acc, value -> acc * 60 + value }.toLong()
