@@ -10,8 +10,10 @@ fun timeStringToSeconds(timeString: String) =
 
 fun secondsToTimeString(seconds: Int) = "%02d:%02d:%02d".format(seconds / 3600, (seconds % 3600) / 60, seconds % 60)
 
-fun parseDateTime(dateTimeString: String): LocalDateTime =
-    LocalDateTime.parse(dateTimeString, DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"))
+fun parseDateTime(dateTimeString: String): Date {
+    val format = SimpleDateFormat("dd/MM/yyyy HH:mm:ss", Locale.getDefault())
+    return format.parse(dateTimeString) ?: Date()
+}
 
 fun formatDateTime(dateTime: LocalDateTime): String =
     dateTime.format(DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm:ss"))

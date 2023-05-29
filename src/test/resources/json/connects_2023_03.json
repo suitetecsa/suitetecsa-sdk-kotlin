@@ -1,1503 +1,375 @@
 [
   {
-    "startSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 18
-      },
-      "time": {
-        "hour": 12,
-        "minute": 58,
-        "second": 10,
-        "nano": 0
-      }
-    },
-    "endSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 18
-      },
-      "time": {
-        "hour": 13,
-        "minute": 4,
-        "second": 28,
-        "nano": 0
-      }
-    },
+    "startSession": "Mar 18, 2023, 12:58:10 PM",
+    "endSession": "Mar 18, 2023, 1:04:28 PM",
     "duration": 378,
     "uploaded": 940032.0,
     "downloaded": 1.743781888E7,
     "import": 1.26
   },
   {
-    "startSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 18
-      },
-      "time": {
-        "hour": 12,
-        "minute": 24,
-        "second": 48,
-        "nano": 0
-      }
-    },
-    "endSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 18
-      },
-      "time": {
-        "hour": 12,
-        "minute": 51,
-        "second": 59,
-        "nano": 0
-      }
-    },
+    "startSession": "Mar 18, 2023, 12:24:48 PM",
+    "endSession": "Mar 18, 2023, 12:51:59 PM",
     "duration": 1631,
     "uploaded": 5693767.68,
     "downloaded": 1.05381888E8,
     "import": 5.44
   },
   {
-    "startSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 18
-      },
-      "time": {
-        "hour": 11,
-        "minute": 47,
-        "second": 10,
-        "nano": 0
-      }
-    },
-    "endSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 18
-      },
-      "time": {
-        "hour": 12,
-        "minute": 6,
-        "second": 32,
-        "nano": 0
-      }
-    },
+    "startSession": "Mar 18, 2023, 11:47:10 AM",
+    "endSession": "Mar 18, 2023, 12:06:32 PM",
     "duration": 1162,
     "uploaded": 3628072.96,
     "downloaded": 7.349469184E7,
     "import": 3.88
   },
   {
-    "startSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 18
-      },
-      "time": {
-        "hour": 10,
-        "minute": 38,
-        "second": 33,
-        "nano": 0
-      }
-    },
-    "endSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 18
-      },
-      "time": {
-        "hour": 11,
-        "minute": 23,
-        "second": 43,
-        "nano": 0
-      }
-    },
+    "startSession": "Mar 18, 2023, 10:38:33 AM",
+    "endSession": "Mar 18, 2023, 11:23:43 AM",
     "duration": 2710,
     "uploaded": 9091153.92,
     "downloaded": 1.2183404544E8,
     "import": 9.04
   },
   {
-    "startSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 18
-      },
-      "time": {
-        "hour": 9,
-        "minute": 55,
-        "second": 4,
-        "nano": 0
-      }
-    },
-    "endSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 18
-      },
-      "time": {
-        "hour": 10,
-        "minute": 34,
-        "second": 17,
-        "nano": 0
-      }
-    },
+    "startSession": "Mar 18, 2023, 9:55:04 AM",
+    "endSession": "Mar 18, 2023, 10:34:17 AM",
     "duration": 2353,
     "uploaded": 9646899.2,
     "downloaded": 2.0314062848E8,
     "import": 7.85
   },
   {
-    "startSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 17
-      },
-      "time": {
-        "hour": 22,
-        "minute": 4,
-        "second": 36,
-        "nano": 0
-      }
-    },
-    "endSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 18
-      },
-      "time": {
-        "hour": 2,
-        "minute": 7,
-        "second": 50,
-        "nano": 0
-      }
-    },
+    "startSession": "Mar 17, 2023, 10:04:36 PM",
+    "endSession": "Mar 18, 2023, 2:07:50 AM",
     "duration": 14594,
     "uploaded": 2.0422066176E8,
     "downloaded": 1.04766373888E9,
     "import": 48.65
   },
   {
-    "startSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 17
-      },
-      "time": {
-        "hour": 21,
-        "minute": 23,
-        "second": 27,
-        "nano": 0
-      }
-    },
-    "endSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 17
-      },
-      "time": {
-        "hour": 21,
-        "minute": 31,
-        "second": 43,
-        "nano": 0
-      }
-    },
+    "startSession": "Mar 17, 2023, 9:23:27 PM",
+    "endSession": "Mar 17, 2023, 9:31:43 PM",
     "duration": 496,
     "uploaded": 1394606.08,
     "downloaded": 8325693.44,
     "import": 1.66
   },
   {
-    "startSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 17
-      },
-      "time": {
-        "hour": 21,
-        "minute": 3,
-        "second": 7,
-        "nano": 0
-      }
-    },
-    "endSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 17
-      },
-      "time": {
-        "hour": 21,
-        "minute": 17,
-        "second": 5,
-        "nano": 0
-      }
-    },
+    "startSession": "Mar 17, 2023, 9:03:07 PM",
+    "endSession": "Mar 17, 2023, 9:17:05 PM",
     "duration": 838,
     "uploaded": 2275409.92,
     "downloaded": 1.48373504E7,
     "import": 2.8
   },
   {
-    "startSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 17
-      },
-      "time": {
-        "hour": 20,
-        "minute": 31,
-        "second": 52,
-        "nano": 0
-      }
-    },
-    "endSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 17
-      },
-      "time": {
-        "hour": 21,
-        "minute": 0,
-        "second": 21,
-        "nano": 0
-      }
-    },
+    "startSession": "Mar 17, 2023, 8:31:52 PM",
+    "endSession": "Mar 17, 2023, 9:00:21 PM",
     "duration": 1709,
     "uploaded": 5546967.04,
     "downloaded": 5.226102784E7,
     "import": 5.7
   },
   {
-    "startSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 17
-      },
-      "time": {
-        "hour": 19,
-        "minute": 18,
-        "second": 7,
-        "nano": 0
-      }
-    },
-    "endSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 17
-      },
-      "time": {
-        "hour": 19,
-        "minute": 52,
-        "second": 21,
-        "nano": 0
-      }
-    },
+    "startSession": "Mar 17, 2023, 7:18:07 PM",
+    "endSession": "Mar 17, 2023, 7:52:21 PM",
     "duration": 2054,
     "uploaded": 598016.0,
     "downloaded": 2600468.48,
     "import": 6.85
   },
   {
-    "startSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 17
-      },
-      "time": {
-        "hour": 18,
-        "minute": 58,
-        "second": 53,
-        "nano": 0
-      }
-    },
-    "endSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 17
-      },
-      "time": {
-        "hour": 19,
-        "minute": 10,
-        "second": 25,
-        "nano": 0
-      }
-    },
+    "startSession": "Mar 17, 2023, 6:58:53 PM",
+    "endSession": "Mar 17, 2023, 7:10:25 PM",
     "duration": 692,
     "uploaded": 1583349.76,
     "downloaded": 1.243611136E7,
     "import": 2.31
   },
   {
-    "startSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 17
-      },
-      "time": {
-        "hour": 10,
-        "minute": 46,
-        "second": 37,
-        "nano": 0
-      }
-    },
-    "endSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 17
-      },
-      "time": {
-        "hour": 11,
-        "minute": 56,
-        "second": 45,
-        "nano": 0
-      }
-    },
+    "startSession": "Mar 17, 2023, 10:46:37 AM",
+    "endSession": "Mar 17, 2023, 11:56:45 AM",
     "duration": 4208,
     "uploaded": 3.757047808E7,
     "downloaded": 5.2595523584E8,
     "import": 14.03
   },
   {
-    "startSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 16
-      },
-      "time": {
-        "hour": 19,
-        "minute": 49,
-        "second": 45,
-        "nano": 0
-      }
-    },
-    "endSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 17
-      },
-      "time": {
-        "hour": 3,
-        "minute": 33,
-        "second": 39,
-        "nano": 0
-      }
-    },
+    "startSession": "Mar 16, 2023, 7:49:45 PM",
+    "endSession": "Mar 17, 2023, 3:33:39 AM",
     "duration": 27834,
     "uploaded": 1.7703108608E8,
     "downloaded": 2.0937965568E9,
     "import": 92.78
   },
   {
-    "startSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 15
-      },
-      "time": {
-        "hour": 18,
-        "minute": 7,
-        "second": 44,
-        "nano": 0
-      }
-    },
-    "endSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 15
-      },
-      "time": {
-        "hour": 19,
-        "minute": 57,
-        "second": 28,
-        "nano": 0
-      }
-    },
+    "startSession": "Mar 15, 2023, 6:07:44 PM",
+    "endSession": "Mar 15, 2023, 7:57:28 PM",
     "duration": 6584,
     "uploaded": 2.947547136E7,
     "downloaded": 4.74742784E8,
     "import": 21.95
   },
   {
-    "startSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 12
-      },
-      "time": {
-        "hour": 20,
-        "minute": 23,
-        "second": 4,
-        "nano": 0
-      }
-    },
-    "endSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 12
-      },
-      "time": {
-        "hour": 23,
-        "minute": 49,
-        "second": 24,
-        "nano": 0
-      }
-    },
+    "startSession": "Mar 12, 2023, 8:23:04 PM",
+    "endSession": "Mar 12, 2023, 11:49:24 PM",
     "duration": 12380,
     "uploaded": 7.0254592E7,
     "downloaded": 6.5689092096E8,
     "import": 41.27
   },
   {
-    "startSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 12
-      },
-      "time": {
-        "hour": 16,
-        "minute": 7,
-        "second": 25,
-        "nano": 0
-      }
-    },
-    "endSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 12
-      },
-      "time": {
-        "hour": 16,
-        "minute": 29,
-        "second": 28,
-        "nano": 0
-      }
-    },
+    "startSession": "Mar 12, 2023, 4:07:25 PM",
+    "endSession": "Mar 12, 2023, 4:29:28 PM",
     "duration": 1323,
     "uploaded": 1.002438656E7,
     "downloaded": 1.0062135296E8,
     "import": 4.41
   },
   {
-    "startSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 12
-      },
-      "time": {
-        "hour": 13,
-        "minute": 58,
-        "second": 56,
-        "nano": 0
-      }
-    },
-    "endSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 12
-      },
-      "time": {
-        "hour": 16,
-        "minute": 3,
-        "second": 54,
-        "nano": 0
-      }
-    },
+    "startSession": "Mar 12, 2023, 1:58:56 PM",
+    "endSession": "Mar 12, 2023, 4:03:54 PM",
     "duration": 7498,
     "uploaded": 7.036993536E7,
     "downloaded": 7.0468501504E8,
     "import": 25.0
   },
   {
-    "startSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 12
-      },
-      "time": {
-        "hour": 13,
-        "minute": 26,
-        "second": 16,
-        "nano": 0
-      }
-    },
-    "endSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 12
-      },
-      "time": {
-        "hour": 13,
-        "minute": 52,
-        "second": 13,
-        "nano": 0
-      }
-    },
+    "startSession": "Mar 12, 2023, 1:26:16 PM",
+    "endSession": "Mar 12, 2023, 1:52:13 PM",
     "duration": 1557,
     "uploaded": 4.149215232E7,
     "downloaded": 1.3098811392E8,
     "import": 5.19
   },
   {
-    "startSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 12
-      },
-      "time": {
-        "hour": 11,
-        "minute": 57,
-        "second": 38,
-        "nano": 0
-      }
-    },
-    "endSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 12
-      },
-      "time": {
-        "hour": 13,
-        "minute": 1,
-        "second": 18,
-        "nano": 0
-      }
-    },
+    "startSession": "Mar 12, 2023, 11:57:38 AM",
+    "endSession": "Mar 12, 2023, 1:01:18 PM",
     "duration": 3820,
     "uploaded": 3.982491648E7,
     "downloaded": 4.8196747264E8,
     "import": 12.74
   },
   {
-    "startSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 12
-      },
-      "time": {
-        "hour": 11,
-        "minute": 10,
-        "second": 28,
-        "nano": 0
-      }
-    },
-    "endSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 12
-      },
-      "time": {
-        "hour": 11,
-        "minute": 41,
-        "second": 6,
-        "nano": 0
-      }
-    },
+    "startSession": "Mar 12, 2023, 11:10:28 AM",
+    "endSession": "Mar 12, 2023, 11:41:06 AM",
     "duration": 1838,
     "uploaded": 2.566914048E7,
     "downloaded": 2.6589790208E8,
     "import": 6.13
   },
   {
-    "startSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 11
-      },
-      "time": {
-        "hour": 22,
-        "minute": 38,
-        "second": 16,
-        "nano": 0
-      }
-    },
-    "endSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 12
-      },
-      "time": {
-        "hour": 2,
-        "minute": 58,
-        "second": 14,
-        "nano": 0
-      }
-    },
+    "startSession": "Mar 11, 2023, 10:38:16 PM",
+    "endSession": "Mar 12, 2023, 3:58:14 AM",
     "duration": 11998,
     "uploaded": 9.629073408E7,
     "downloaded": 1.1811160064E9,
     "import": 40.0
   },
   {
-    "startSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 11
-      },
-      "time": {
-        "hour": 21,
-        "minute": 0,
-        "second": 50,
-        "nano": 0
-      }
-    },
-    "endSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 11
-      },
-      "time": {
-        "hour": 22,
-        "minute": 33,
-        "second": 38,
-        "nano": 0
-      }
-    },
+    "startSession": "Mar 11, 2023, 9:00:50 PM",
+    "endSession": "Mar 11, 2023, 10:33:38 PM",
     "duration": 5568,
     "uploaded": 4.80247808E7,
     "downloaded": 3.5633758208E8,
     "import": 18.56
   },
   {
-    "startSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 11
-      },
-      "time": {
-        "hour": 19,
-        "minute": 15,
-        "second": 14,
-        "nano": 0
-      }
-    },
-    "endSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 11
-      },
-      "time": {
-        "hour": 20,
-        "minute": 53,
-        "second": 57,
-        "nano": 0
-      }
-    },
+    "startSession": "Mar 11, 2023, 7:15:14 PM",
+    "endSession": "Mar 11, 2023, 8:53:57 PM",
     "duration": 5923,
     "uploaded": 4.291821568E7,
     "downloaded": 3.50486528E8,
     "import": 19.75
   },
   {
-    "startSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 11
-      },
-      "time": {
-        "hour": 17,
-        "minute": 19,
-        "second": 10,
-        "nano": 0
-      }
-    },
-    "endSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 11
-      },
-      "time": {
-        "hour": 19,
-        "minute": 8,
-        "second": 33,
-        "nano": 0
-      }
-    },
+    "startSession": "Mar 11, 2023, 5:19:10 PM",
+    "endSession": "Mar 11, 2023, 7:08:33 PM",
     "duration": 6563,
     "uploaded": 3.15621376E7,
     "downloaded": 3.6704354304E8,
     "import": 21.88
   },
   {
-    "startSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 11
-      },
-      "time": {
-        "hour": 16,
-        "minute": 28,
-        "second": 35,
-        "nano": 0
-      }
-    },
-    "endSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 11
-      },
-      "time": {
-        "hour": 17,
-        "minute": 2,
-        "second": 54,
-        "nano": 0
-      }
-    },
+    "startSession": "Mar 11, 2023, 4:28:35 PM",
+    "endSession": "Mar 11, 2023, 5:02:54 PM",
     "duration": 2059,
     "uploaded": 7172259.84,
     "downloaded": 8.343519232E7,
     "import": 6.87
   },
   {
-    "startSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 11
-      },
-      "time": {
-        "hour": 14,
-        "minute": 0,
-        "second": 46,
-        "nano": 0
-      }
-    },
-    "endSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 11
-      },
-      "time": {
-        "hour": 15,
-        "minute": 31,
-        "second": 14,
-        "nano": 0
-      }
-    },
+    "startSession": "Mar 11, 2023, 2:00:46 PM",
+    "endSession": "Mar 11, 2023, 3:31:14 PM",
     "duration": 5428,
     "uploaded": 3.709861888E7,
     "downloaded": 3.6441161728E8,
     "import": 18.1
   },
   {
-    "startSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 10
-      },
-      "time": {
-        "hour": 21,
-        "minute": 2,
-        "second": 45,
-        "nano": 0
-      }
-    },
-    "endSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 11
-      },
-      "time": {
-        "hour": 4,
-        "minute": 28,
-        "second": 15,
-        "nano": 0
-      }
-    },
+    "startSession": "Mar 10, 2023, 9:02:45 PM",
+    "endSession": "Mar 11, 2023, 4:28:15 AM",
     "duration": 26730,
     "uploaded": 1.5059648512E8,
     "downloaded": 1.84683593728E9,
     "import": 17.3
   },
   {
-    "startSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 10
-      },
-      "time": {
-        "hour": 20,
-        "minute": 30,
-        "second": 25,
-        "nano": 0
-      }
-    },
-    "endSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 10
-      },
-      "time": {
-        "hour": 20,
-        "minute": 57,
-        "second": 14,
-        "nano": 0
-      }
-    },
+    "startSession": "Mar 10, 2023, 8:30:25 PM",
+    "endSession": "Mar 10, 2023, 8:57:14 PM",
     "duration": 1609,
     "uploaded": 1.034944512E7,
     "downloaded": 8.749318144E7,
     "import": 0.0
   },
   {
-    "startSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 6
-      },
-      "time": {
-        "hour": 18,
-        "minute": 4,
-        "second": 26,
-        "nano": 0
-      }
-    },
-    "endSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 6
-      },
-      "time": {
-        "hour": 20,
-        "minute": 4,
-        "second": 13,
-        "nano": 0
-      }
-    },
+    "startSession": "Mar 6, 2023, 6:04:26 PM",
+    "endSession": "Mar 6, 2023, 8:04:13 PM",
     "duration": 7187,
     "uploaded": 2.300575744E7,
     "downloaded": 4.9101668352E8,
     "import": 0.0
   },
   {
-    "startSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 6
-      },
-      "time": {
-        "hour": 17,
-        "minute": 54,
-        "second": 40,
-        "nano": 0
-      }
-    },
-    "endSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 6
-      },
-      "time": {
-        "hour": 18,
-        "minute": 0,
-        "second": 45,
-        "nano": 0
-      }
-    },
+    "startSession": "Mar 6, 2023, 5:54:40 PM",
+    "endSession": "Mar 6, 2023, 6:00:45 PM",
     "duration": 365,
     "uploaded": 2443182.08,
     "downloaded": 2.09190912E7,
     "import": 0.0
   },
   {
-    "startSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 5
-      },
-      "time": {
-        "hour": 21,
-        "minute": 49,
-        "second": 51,
-        "nano": 0
-      }
-    },
-    "endSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 6
-      },
-      "time": {
-        "hour": 0,
-        "minute": 0,
-        "second": 24,
-        "nano": 0
-      }
-    },
+    "startSession": "Mar 5, 2023, 9:49:51 PM",
+    "endSession": "Mar 6, 2023, 12:00:24 AM",
     "duration": 7833,
     "uploaded": 3.058696192E7,
     "downloaded": 3.7148950528E8,
     "import": 0.0
   },
   {
-    "startSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 5
-      },
-      "time": {
-        "hour": 17,
-        "minute": 38,
-        "second": 56,
-        "nano": 0
-      }
-    },
-    "endSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 5
-      },
-      "time": {
-        "hour": 21,
-        "minute": 41,
-        "second": 29,
-        "nano": 0
-      }
-    },
+    "startSession": "Mar 5, 2023, 5:38:56 PM",
+    "endSession": "Mar 5, 2023, 9:41:29 PM",
     "duration": 14553,
     "uploaded": 3.47602944E7,
     "downloaded": 4.3790630912E8,
     "import": 0.0
   },
   {
-    "startSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 5
-      },
-      "time": {
-        "hour": 16,
-        "minute": 53,
-        "second": 8,
-        "nano": 0
-      }
-    },
-    "endSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 5
-      },
-      "time": {
-        "hour": 17,
-        "minute": 31,
-        "second": 42,
-        "nano": 0
-      }
-    },
+    "startSession": "Mar 5, 2023, 4:53:08 PM",
+    "endSession": "Mar 5, 2023, 5:31:42 PM",
     "duration": 2314,
     "uploaded": 7686062.08,
     "downloaded": 1.46538496E8,
     "import": 0.0
   },
   {
-    "startSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 5
-      },
-      "time": {
-        "hour": 14,
-        "minute": 0,
-        "second": 15,
-        "nano": 0
-      }
-    },
-    "endSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 5
-      },
-      "time": {
-        "hour": 14,
-        "minute": 59,
-        "second": 57,
-        "nano": 0
-      }
-    },
+    "startSession": "Mar 5, 2023, 2:00:15 PM",
+    "endSession": "Mar 5, 2023, 2:59:57 PM",
     "duration": 3582,
     "uploaded": 1.55713536E7,
     "downloaded": 2.36191744E8,
     "import": 0.0
   },
   {
-    "startSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 5
-      },
-      "time": {
-        "hour": 12,
-        "minute": 50,
-        "second": 55,
-        "nano": 0
-      }
-    },
-    "endSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 5
-      },
-      "time": {
-        "hour": 13,
-        "minute": 48,
-        "second": 37,
-        "nano": 0
-      }
-    },
+    "startSession": "Mar 5, 2023, 12:50:55 PM",
+    "endSession": "Mar 5, 2023, 1:48:37 PM",
     "duration": 3462,
     "uploaded": 1.581252608E7,
     "downloaded": 2.553806848E8,
     "import": 0.0
   },
   {
-    "startSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 5
-      },
-      "time": {
-        "hour": 9,
-        "minute": 6,
-        "second": 58,
-        "nano": 0
-      }
-    },
-    "endSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 5
-      },
-      "time": {
-        "hour": 12,
-        "minute": 34,
-        "second": 32,
-        "nano": 0
-      }
-    },
+    "startSession": "Mar 5, 2023, 9:06:58 AM",
+    "endSession": "Mar 5, 2023, 12:34:32 PM",
     "duration": 12454,
     "uploaded": 8.683257856E7,
     "downloaded": 1.27775277056E9,
     "import": 0.0
   },
   {
-    "startSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 4
-      },
-      "time": {
-        "hour": 22,
-        "minute": 24,
-        "second": 47,
-        "nano": 0
-      }
-    },
-    "endSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 5
-      },
-      "time": {
-        "hour": 2,
-        "minute": 46,
-        "second": 49,
-        "nano": 0
-      }
-    },
+    "startSession": "Mar 4, 2023, 10:24:47 PM",
+    "endSession": "Mar 5, 2023, 2:46:49 AM",
     "duration": 15722,
     "uploaded": 8.348762112E7,
     "downloaded": 1.15964116992E9,
     "import": 0.0
   },
   {
-    "startSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 4
-      },
-      "time": {
-        "hour": 21,
-        "minute": 12,
-        "second": 31,
-        "nano": 0
-      }
-    },
-    "endSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 4
-      },
-      "time": {
-        "hour": 22,
-        "minute": 10,
-        "second": 26,
-        "nano": 0
-      }
-    },
+    "startSession": "Mar 4, 2023, 9:12:31 PM",
+    "endSession": "Mar 4, 2023, 10:10:26 PM",
     "duration": 3475,
     "uploaded": 2.859466752E7,
     "downloaded": 2.7365736448E8,
     "import": 0.0
   },
   {
-    "startSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 4
-      },
-      "time": {
-        "hour": 21,
-        "minute": 5,
-        "second": 25,
-        "nano": 0
-      }
-    },
-    "endSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 4
-      },
-      "time": {
-        "hour": 21,
-        "minute": 9,
-        "second": 49,
-        "nano": 0
-      }
-    },
+    "startSession": "Mar 4, 2023, 9:05:25 PM",
+    "endSession": "Mar 4, 2023, 9:09:49 PM",
     "duration": 264,
     "uploaded": 2149580.8,
     "downloaded": 2.17055232E7,
     "import": 0.0
   },
   {
-    "startSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 4
-      },
-      "time": {
-        "hour": 19,
-        "minute": 5,
-        "second": 15,
-        "nano": 0
-      }
-    },
-    "endSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 4
-      },
-      "time": {
-        "hour": 21,
-        "minute": 1,
-        "second": 40,
-        "nano": 0
-      }
-    },
+    "startSession": "Mar 4, 2023, 7:05:15 PM",
+    "endSession": "Mar 4, 2023, 9:01:40 PM",
     "duration": 6985,
     "uploaded": 2.848980992E7,
     "downloaded": 3.6876320768E8,
     "import": 0.0
   },
   {
-    "startSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 4
-      },
-      "time": {
-        "hour": 17,
-        "minute": 51,
-        "second": 23,
-        "nano": 0
-      }
-    },
-    "endSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 4
-      },
-      "time": {
-        "hour": 19,
-        "minute": 2,
-        "second": 47,
-        "nano": 0
-      }
-    },
+    "startSession": "Mar 4, 2023, 5:51:23 PM",
+    "endSession": "Mar 4, 2023, 7:02:47 PM",
     "duration": 4284,
     "uploaded": 1.234173952E7,
     "downloaded": 1.8148753408E8,
     "import": 0.0
   },
   {
-    "startSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 4
-      },
-      "time": {
-        "hour": 16,
-        "minute": 48,
-        "second": 12,
-        "nano": 0
-      }
-    },
-    "endSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 4
-      },
-      "time": {
-        "hour": 17,
-        "minute": 26,
-        "second": 11,
-        "nano": 0
-      }
-    },
+    "startSession": "Mar 4, 2023, 4:48:12 PM",
+    "endSession": "Mar 4, 2023, 5:26:11 PM",
     "duration": 2279,
     "uploaded": 1.702887424E7,
     "downloaded": 1.62791424E8,
     "import": 0.0
   },
   {
-    "startSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 4
-      },
-      "time": {
-        "hour": 15,
-        "minute": 11,
-        "second": 37,
-        "nano": 0
-      }
-    },
-    "endSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 4
-      },
-      "time": {
-        "hour": 16,
-        "minute": 32,
-        "second": 14,
-        "nano": 0
-      }
-    },
+    "startSession": "Mar 4, 2023, 3:11:37 PM",
+    "endSession": "Mar 4, 2023, 4:32:14 PM",
     "duration": 4837,
     "uploaded": 3.116367872E7,
     "downloaded": 3.8050725888E8,
     "import": 0.0
   },
   {
-    "startSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 4
-      },
-      "time": {
-        "hour": 13,
-        "minute": 9,
-        "second": 24,
-        "nano": 0
-      }
-    },
-    "endSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 4
-      },
-      "time": {
-        "hour": 13,
-        "minute": 25,
-        "second": 34,
-        "nano": 0
-      }
-    },
+    "startSession": "Mar 4, 2023, 1:09:24 PM",
+    "endSession": "Mar 4, 2023, 1:25:34 PM",
     "duration": 970,
     "uploaded": 9311354.88,
     "downloaded": 7.559184384E7,
     "import": 0.0
   },
   {
-    "startSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 4
-      },
-      "time": {
-        "hour": 11,
-        "minute": 51,
-        "second": 11,
-        "nano": 0
-      }
-    },
-    "endSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 4
-      },
-      "time": {
-        "hour": 12,
-        "minute": 15,
-        "second": 53,
-        "nano": 0
-      }
-    },
+    "startSession": "Mar 4, 2023, 11:51:11 AM",
+    "endSession": "Mar 4, 2023, 12:15:53 PM",
     "duration": 1482,
     "uploaded": 5421137.92,
     "downloaded": 7.731150848E7,
     "import": 0.0
   },
   {
-    "startSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 4
-      },
-      "time": {
-        "hour": 10,
-        "minute": 13,
-        "second": 16,
-        "nano": 0
-      }
-    },
-    "endSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 4
-      },
-      "time": {
-        "hour": 11,
-        "minute": 46,
-        "second": 11,
-        "nano": 0
-      }
-    },
+    "startSession": "Mar 4, 2023, 10:13:16 AM",
+    "endSession": "Mar 4, 2023, 11:46:11 AM",
     "duration": 5575,
     "uploaded": 1.348468736E7,
     "downloaded": 1.77209344E8,
     "import": 0.0
   },
   {
-    "startSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 3
-      },
-      "time": {
-        "hour": 21,
-        "minute": 18,
-        "second": 27,
-        "nano": 0
-      }
-    },
-    "endSession": {
-      "date": {
-        "year": 2023,
-        "month": 3,
-        "day": 4
-      },
-      "time": {
-        "hour": 3,
-        "minute": 48,
-        "second": 15,
-        "nano": 0
-      }
-    },
+    "startSession": "Mar 3, 2023, 9:18:27 PM",
+    "endSession": "Mar 4, 2023, 3:48:15 AM",
     "duration": 23388,
     "uploaded": 7.175405568E7,
     "downloaded": 8.3903905792E8,

@@ -3,7 +3,8 @@ package cu.suitetecsa.sdk.nauta.domain.util
 import java.util.*
 
 fun sizeStringToBytes(sizeString: String): Double {
-    val (sizeValue, sizeUnit) = sizeString.split(" ")
+    val sizeUnit = sizeString.split(" ").last()
+    val sizeValue = sizeString.replace(" $sizeUnit", "").replace(" ", "")
     return sizeValue.replace(",", ".").toDouble() * when (sizeUnit.uppercase(Locale.getDefault())) {
         "KB" -> 1024
         "MB" -> 1024 * 1024

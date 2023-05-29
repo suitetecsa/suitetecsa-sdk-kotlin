@@ -1,21 +1,23 @@
 package cu.suitetecsa.sdk.nauta.core
 
-val userAgent: String
+internal val userPortal = Portal.USER
+internal val connectPortal = Portal.CONNECT
+internal val userAgent: String
     get() = "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:97.0) Gecko/20100101 Firefox/97.0"
-val headers: MutableMap<String, String>
+internal val headers: MutableMap<String, String>
     get() = mutableMapOf(
         "Accept" to "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
         "Accept-Encoding" to "gzip, deflate, br",
         "Accept-Language" to "es-MX,es;q=0.8,en-US;q=0.5,en;q=0.3"
     )
-val connectDomain: String
+internal val connectDomain: String
     get() = "secure.etecsa.net"
-val urlBase: Map<Portal, String>
+internal val urlBase: Map<Portal, String>
     get() = mapOf(
         Portal.CONNECT to "https://$connectDomain:8443/",
         Portal.USER to "https://www.portal.nauta.cu/"
     )
-val portalsUrls: Map<Portal, Map<Action, Any>>
+internal val portalsUrls: Map<Portal, Map<Action, Any>>
     get() = mapOf(
         Portal.CONNECT to mapOf(
             Action.LOGOUT to "LogoutServlet",

@@ -2,9 +2,9 @@
 
 [![](https://jitpack.io/v/suitetecsa/suitetecsa-sdk-kotlin.svg)](https://jitpack.io/#suitetecsa/suitetecsa-sdk-kotlin)
 
-`suitetecs-sdk-kotlin` es una herramienta diseñada para  interactuar con los servicios de [ETECSA](https://www.etecsa.cu/). La librería utiliza técnicas de scrapping para acceder a los portales de [acceso a internet ](https://secure.etecsa.net:8443/)y de [usuario](https://www.portal.nauta.cu/) de Nauta. Implementa funciones para todas las operaciones disponibles en ambos portales, y ofrece soporte para Nauta Hogar.
+`suitetecs-sdk-kotlin` es una herramienta diseñada para interactuar con los servicios de [ETECSA](https://www.etecsa.cu/). La librería utiliza técnicas de scrapping para acceder a los portales de [acceso a internet ](https://secure.etecsa.net:8443/)y de [usuario](https://www.portal.nauta.cu/) de Nauta. Implementa funciones para todas las operaciones disponibles en ambos portales, y ofrece soporte para Nauta Hogar.
 
-Todas las funcionalidades están disponibles desde una única clase, `NautaClient`, lo que permite interactuar con ambos portales a la vez, permitiendo obtener datos de manera rápida y eficiente, ahorrando tiempo y esfuerzos a la hora de desarrollar aplicaciones que busquen gestionar los servicios de [ETECSA](https://www.etecsa.cu/). Además, incluye funcionalidades útiles como la generación de contraseñas y la compartición de sesión.
+Todas las funcionalidades están disponibles desde una única clase, `NautaApi`, lo que permite interactuar con ambos portales a la vez, permitiendo obtener datos de manera rápida y eficiente, ahorrando tiempo y esfuerzos a la hora de desarrollar aplicaciones que busquen gestionar los servicios de [ETECSA](https://www.etecsa.cu/). Además, incluye funcionalidades útiles como la generación de contraseñas y la compartición de sesión.
 
 Se han seguido los principios SOLID en su desarrollo, lo que garantiza que es fácil de entender, modificar y mantener. La mayoría de la información devuelta por las funciones son objetos, lo que simplifica el trabajo de las aplicaciones que lo utilizan.
 
@@ -48,67 +48,75 @@ Al ser un proyecto open-source, se valoran y se reciben contribuciones de la com
 Importa `suitetecsa-sdk-kotlin` en tu proyecto
 
 ```groovy
-implementation("com.github.suitetecsa:suitetecsa-sdk-kotlin:0.1.8")
+implementation("com.github.suitetecsa:suitetecsa-sdk-kotlin:0.2-alpha01")
 ```
 
-Importal `NautaSession`, `JsoupNautaProvider` y `NautaClient`
+Importal `NautaSession`, `JsoupConnectPortalCommunicator`, `JsoupConnectPortalScraper`, `JsoupUserPortalCommunicator`, `JsoupUserPortalScrapper` y `NautaApi`
 
 ```kotlin
-import cu.suitetecsa.sdk.nauta.data.repository.JSoupNautaSrapper
-import cu.suitetecsa.sdk.nauta.data.repository.DefaultNautaSession
-import cu.suitetecsa.sdk.nauta.domain.service.NautaClient
+import cu.suitetecsa.sdk.nauta.framework.network.JsoupConnectPortalCommunicator
+import cu.suitetecsa.sdk.nauta.framework.network.JsoupUserPortalCommunicator
+import cu.suitetecsa.sdk.nauta.framework.network.DefaultNautaSession
+import cu.suitetecsa.sdk.nauta.framekork.JsoupConnectPortalScraper
+import cu.suitetecsa.sdk.nauta.framekork.JsoupUserPortalScrapper
+import cu.suitetecsa.sdk.nauta.framekork.NautaApi
 ```
 
 Crea las instancias necesarias o inyectalas
 
 ```kotlin
-    val session = DefaultNautaSession()
-    val scrapper = JSoupNautaSrapper(session)
-    val client = NautaClient(scrapper)
+    val userSession = DefaultNautaSession()
+    val connectSession = DefaultNautaSession()
+    val api = NautaApi(
+      JsoupConnectPortalCommunicator(connectSession),
+      JsoupConnectPortalScraper(),
+      JsoupUserPortalCommunicator(userSession),
+      JsoupUserPortalScrapper()
+    )
 ```
 
 Establece las credenciales que usaras para iniciar sesion
 
 ```kotlin
-    client.setCredentials("user.name@nauta.com.cu", "somePassword")
+    api.credentials = Pair("user.name@nauta.com.cu", "somePassword")
 ```
 
 Conectate a internet desde la wifi o Nauta Hogar
 
 ```kotlin
-    // Para hacer login en el portal cautivo
-    client.connect()
+    // Para hacer login en el portal cautivo
+    api.connect()
     // Obtener el tiempo restante
-    val remainingTime = client.remainingTime
+    val remainingTime = api.remainingTime
 ```
 
 Interactua con el portal de usuario
 
 ```kotlin
-    // Para hacer login en el portal de usuario
-    downloadCaptcha("captchaImage.png", client.captchaImage)
+    // Para hacer login en el portal de usuario
+    downloadCaptcha("captchaImage.png", api.captchaImage)
     print("Introduzca el código de la imagen captcha: ")
     val keyMap = Scanner(System.`in`)
     val captchaCode = keyMap.nextLine()
-    val user: NautaUser = client.login(captchaCode)
+    val user: NautaUser = api.login(captchaCode)
 ```
 
 Otras funciones
 
 ```kotlin
     // Funciones del portal cautivo
-    client.connectInformation
-    client.disconnect()
+    api.connectInformation // Obtiene la información de la cuenta que provee el portal cautivo
+    api.disconnect() // Desconecta la cuenta activa
 
     // Funciones del portal de usuario
-    client.userInformation
-    client.toUpBalance("rechargeCode")
-    client.transferBalance(25f, "destinationAccount")
-    client.payNautaHome(300f)
-    client.getConnections(2023, 3)
-    client.getRecharges(2023, 3)
-    client.getTransfers(2023, 3)
-    client.getQuotesPaid(2023, 3)
+    api.userInformation // Obtiene la información de la cuenta que provee el portal de usuario
+    api.toUpBalance("rechargeCode") // Recarga el saldo de la cuenta
+    api.transferBalance(25f, "destinationAccount") // Para transferir saldo a otra cuenta nauta
+    api.transferBalance(25f) // Para pagar cuota de nauta hogar
+    api.getConnections(api.getConnectionsSummary(2023, 3)) // Obtiene las conexiones realizadas en el mes y año especificados
+    api.getRecharges(api.getRechargesSummary(2023, 3)) // Obtiene las recargas realizadas en el mes y año especificados
+    api.getTransfers(api.getTransfersSummary(2023, 3)) // Obtiene las transferencias realizadas en el mes y año especificados
+    api.getQuotesPaid(api.getQuotesPaidSummary(2023, 3)) // Obtiene las cuotas pagadas en el mes y año especificados
 ```
 
 # Contribución
