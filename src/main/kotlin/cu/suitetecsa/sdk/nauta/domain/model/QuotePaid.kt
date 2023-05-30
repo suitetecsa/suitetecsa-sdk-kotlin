@@ -1,9 +1,9 @@
 package cu.suitetecsa.sdk.nauta.domain.model
 
-import java.time.LocalDateTime
+import java.util.*
 
 data class QuotePaid(
-    val date: LocalDateTime,
+    val date: Date,
     val import: Float,
     val channel: String,
     val type: String,

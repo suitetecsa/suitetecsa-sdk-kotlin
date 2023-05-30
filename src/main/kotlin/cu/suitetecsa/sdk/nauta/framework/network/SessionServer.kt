@@ -1,4 +1,4 @@
-package cu.suitetecsa.sdk.nauta.data.network
+package cu.suitetecsa.sdk.nauta.framework.network
 
 import com.google.gson.Gson
 import java.net.Inet4Address
