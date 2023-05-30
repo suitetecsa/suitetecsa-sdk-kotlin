@@ -6,7 +6,7 @@ plugins {
 }
 
 group = "cu.suitetecsa"
-version = "0.2-alpha01"
+version = "0.2-alpha02"
 
 publishing {
     publications {	// Configure el paquete de salida publicado, un proyecto puede tener múltiples salidas, pero solo una es
@@ -34,6 +34,8 @@ dependencies {
     testImplementation(kotlin("test"))
     testImplementation("io.mockk:mockk:1.13.4")
     testImplementation("com.google.code.gson:gson:2.10.1")
+    implementation(kotlin("stdlib-jdk8"))
+    testImplementation("junit:junit:4.13.1")
 }
 
 tasks.test {
@@ -42,4 +44,7 @@ tasks.test {
 
 tasks.withType<KotlinCompile> {
     kotlinOptions.jvmTarget = "1.8"
+}
+kotlin {
+    jvmToolchain(11)
 }

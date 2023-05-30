@@ -57,9 +57,9 @@ Importal `NautaSession`, `JsoupConnectPortalCommunicator`, `JsoupConnectPortalSc
 import cu.suitetecsa.sdk.nauta.framework.network.JsoupConnectPortalCommunicator
 import cu.suitetecsa.sdk.nauta.framework.network.JsoupUserPortalCommunicator
 import cu.suitetecsa.sdk.nauta.framework.network.DefaultNautaSession
-import cu.suitetecsa.sdk.nauta.framekork.JsoupConnectPortalScraper
-import cu.suitetecsa.sdk.nauta.framekork.JsoupUserPortalScrapper
-import cu.suitetecsa.sdk.nauta.framekork.NautaApi
+import cu.suitetecsa.sdk.nauta.framework.JsoupConnectPortalScraper
+import cu.suitetecsa.sdk.nauta.framework.JsoupUserPortalScrapper
+import cu.suitetecsa.sdk.nauta.framework.NautaApi
 ```
 
 Crea las instancias necesarias o inyectalas

@@ -1,4 +1,4 @@
-package cu.suitetecsa.sdk.nauta.framekork
+package cu.suitetecsa.sdk.nauta.framework
 
 import cu.suitetecsa.sdk.nauta.framework.model.ResultType
 import cu.suitetecsa.sdk.nauta.domain.model.*

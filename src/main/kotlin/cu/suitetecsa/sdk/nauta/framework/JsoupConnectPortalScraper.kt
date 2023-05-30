@@ -1,9 +1,9 @@
-package cu.suitetecsa.sdk.nauta.framekork
+package cu.suitetecsa.sdk.nauta.framework
 
+import cu.suitetecsa.sdk.nauta.core.*
 import cu.suitetecsa.sdk.nauta.core.connectDomain
 import cu.suitetecsa.sdk.nauta.core.connectPortal
 import cu.suitetecsa.sdk.nauta.core.throwExceptionOnFailure
-import cu.suitetecsa.sdk.nauta.core.toSeconds
 import cu.suitetecsa.sdk.nauta.framework.model.AccountInfo
 import cu.suitetecsa.sdk.nauta.framework.model.LastConnection
 import cu.suitetecsa.sdk.nauta.framework.model.NautaConnectInformation
