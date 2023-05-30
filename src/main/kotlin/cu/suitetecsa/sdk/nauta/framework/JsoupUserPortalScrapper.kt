@@ -1,14 +1,10 @@
-package cu.suitetecsa.sdk.nauta.framekork
+package cu.suitetecsa.sdk.nauta.framework
 
-import cu.suitetecsa.sdk.nauta.core.component6
+import cu.suitetecsa.sdk.nauta.core.*
 import cu.suitetecsa.sdk.nauta.core.throwExceptionOnFailure
 import cu.suitetecsa.sdk.nauta.core.userPortal
 import cu.suitetecsa.sdk.nauta.framework.model.ResultType
 import cu.suitetecsa.sdk.nauta.domain.model.*
-import cu.suitetecsa.sdk.nauta.domain.util.parseDateTime
-import cu.suitetecsa.sdk.nauta.domain.util.priceStringToFloat
-import cu.suitetecsa.sdk.nauta.domain.util.sizeStringToBytes
-import cu.suitetecsa.sdk.nauta.domain.util.timeStringToSeconds
 import org.jsoup.Jsoup
 
 internal class JsoupUserPortalScrapper : UserPortalScraper {
@@ -63,11 +59,11 @@ internal class JsoupUserPortalScrapper : UserPortalScraper {
         return ConnectionsSummary(
             connections.selectFirst("input[name=count]")!!.attr("value").toInt(),
             connections.selectFirst("input[name=year_month_selected]")!!.attr("value"),
-            timeStringToSeconds(totalTime.selectFirst(".card-stats-number")!!.text().trim()),
-            priceStringToFloat(totalImport.selectFirst(".card-stats-number")!!.text().trim()),
-            sizeStringToBytes(uploader.selectFirst(".card-stats-number")!!.text().trim()),
-            sizeStringToBytes(downloader.selectFirst(".card-stats-number")!!.text().trim()),
-            sizeStringToBytes(totalTraffic.selectFirst(".card-stats-number")!!.text().trim())
+            totalTime.selectFirst(".card-stats-number")!!.text().trim().toSeconds(),
+            totalImport.selectFirst(".card-stats-number")!!.text().trim().toPriceFloat(),
+            uploader.selectFirst(".card-stats-number")!!.text().trim().toBytes(),
+            downloader.selectFirst(".card-stats-number")!!.text().trim().toBytes(),
+            totalTraffic.selectFirst(".card-stats-number")!!.text().trim().toBytes()
         )
     }
 
@@ -77,7 +73,7 @@ internal class JsoupUserPortalScrapper : UserPortalScraper {
         return RechargesSummary(
             recharges.selectFirst("input[name=count]")!!.attr("value").toInt(),
             recharges.selectFirst("input[name=year_month_selected]")!!.attr("value"),
-            priceStringToFloat(totalImport.selectFirst(".card-stats-number")!!.text().trim())
+            totalImport.selectFirst(".card-stats-number")!!.text().trim().toPriceFloat()
         )
     }
 
@@ -87,7 +83,7 @@ internal class JsoupUserPortalScrapper : UserPortalScraper {
         return TransfersSummary(
             transfers.selectFirst("input[name=count]")!!.attr("value").toInt(),
             transfers.selectFirst("input[name=year_month_selected]")!!.attr("value"),
-            priceStringToFloat(totalImport.selectFirst(".card-stats-number")!!.text().trim())
+            totalImport.selectFirst(".card-stats-number")!!.text().trim().toPriceFloat()
         )
     }
 
@@ -97,7 +93,7 @@ internal class JsoupUserPortalScrapper : UserPortalScraper {
         return QuotesPaidSummary(
             quotesPaid.selectFirst("input[name=count]")!!.attr("value").toInt(),
             quotesPaid.selectFirst("input[name=year_month_selected]")!!.attr("value"),
-            priceStringToFloat(totalImport.selectFirst(".card-stats-number")!!.text().trim())
+            totalImport.selectFirst(".card-stats-number")!!.text().trim().toPriceFloat()
         )
     }
 
@@ -113,12 +109,12 @@ internal class JsoupUserPortalScrapper : UserPortalScraper {
                     )
                     connections.add(
                         Connection(
-                            parseDateTime(startSessionTag.text().trim()),
-                            parseDateTime(endSessionTag.text().trim()),
-                            timeStringToSeconds(durationTag.text().trim()),
-                            sizeStringToBytes(uploadedTag.text().trim()),
-                            sizeStringToBytes(downloadedTag.text().trim()),
-                            priceStringToFloat(importTag.text().trim())
+                            startSessionTag.text().trim().toDateTime(),
+                            endSessionTag.text().trim().toDateTime(),
+                            durationTag.text().trim().toSeconds(),
+                            uploadedTag.text().trim().toBytes(),
+                            downloadedTag.text().trim().toBytes(),
+                            importTag.text().trim().toPriceFloat()
                         )
                     )
                 }
@@ -137,8 +133,8 @@ internal class JsoupUserPortalScrapper : UserPortalScraper {
                     val (dateTag, importTag, channelTag, typeTag) = row.select("td")
                     recharges.add(
                         Recharge(
-                            parseDateTime(dateTag.text().trim()),
-                            priceStringToFloat(importTag.text().trim()),
+                            dateTag.text().trim().toDateTime(),
+                            importTag.text().trim().toPriceFloat(),
                             channelTag.text().trim(),
                             typeTag.text().trim()
                         )
@@ -159,8 +155,8 @@ internal class JsoupUserPortalScrapper : UserPortalScraper {
                     val (dateTag, importTag, destinyAccountTag) = row.select("td")
                     transfers.add(
                         Transfer(
-                            parseDateTime(dateTag.text().trim()),
-                            priceStringToFloat(importTag.text().trim()),
+                            dateTag.text().trim().toDateTime(),
+                            importTag.text().trim().toPriceFloat(),
                             destinyAccountTag.text().trim()
                         )
                     )
@@ -180,8 +176,8 @@ internal class JsoupUserPortalScrapper : UserPortalScraper {
                     val (dateTag, importTag, channelTag, typeTag, officeTag) = row.select("td")
                     quotesPaid.add(
                         QuotePaid(
-                            parseDateTime(dateTag.text().trim()),
-                            priceStringToFloat(importTag.text().trim()),
+                            dateTag.text().trim().toDateTime(),
+                            importTag.text().trim().toPriceFloat(),
                             channelTag.text().trim(),
                             typeTag.text().trim(),
                             officeTag.text().trim()

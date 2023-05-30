@@ -10,9 +10,6 @@ import cu.suitetecsa.sdk.nauta.framework.network.JsoupConnectPortalCommunicator
 import cu.suitetecsa.sdk.nauta.framework.network.JsoupUserPortalCommunicator
 import cu.suitetecsa.sdk.nauta.framework.network.NautaSession
 import cu.suitetecsa.sdk.nauta.domain.model.*
-import cu.suitetecsa.sdk.nauta.framekork.JsoupConnectPortalScraper
-import cu.suitetecsa.sdk.nauta.framekork.JsoupUserPortalScrapper
-import cu.suitetecsa.sdk.nauta.framekork.NautaApi
 import io.mockk.every
 import io.mockk.mockk
 import okio.ByteString.Companion.encode
@@ -172,7 +169,7 @@ class NautaApiTest {
 
     @Test
     fun connect() {
-        api.credentials = Pair("user.name@nauta.com.cu", "somePassword")
+        api.setCredentials("user.name@nauta.com.cu", "somePassword")
         api.connect()
         val dataSession = api.dataSession
         val dataCompare = DataSession(
@@ -192,7 +189,7 @@ class NautaApiTest {
 
     @Test
     fun getConnectInformation() {
-        api.credentials = Pair("user.name@nauta.com.cu", "somePassword")
+        api.setCredentials("user.name@nauta.com.cu", "somePassword")
         val connectInformation = api.connectInformation
         assertEquals(connectInformation, gson.fromJson(userInfoConnectJson, NautaConnectInformation::class.java))
     }
@@ -206,7 +203,7 @@ class NautaApiTest {
 
     @Test
     fun login() {
-        api.credentials = Pair("user.name@nauta.com.cu", "somePassword")
+        api.setCredentials("user.name@nauta.com.cu", "somePassword")
         api.captchaImage
         val user = api.login("captchaCode")
         assertEquals(user, gson.fromJson(userInfoJson, NautaUser::class.java))

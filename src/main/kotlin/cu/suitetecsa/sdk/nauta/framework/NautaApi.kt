@@ -1,4 +1,4 @@
-package cu.suitetecsa.sdk.nauta.framekork
+package cu.suitetecsa.sdk.nauta.framework
 
 import cu.suitetecsa.sdk.nauta.core.*
 import cu.suitetecsa.sdk.nauta.core.exceptions.LoginException
@@ -67,14 +67,6 @@ class NautaApi(
             }
         }
 
-    var credentials: Pair<String, String>
-        get() = Pair(username, password)
-        set(value) {
-            val (user, pwd) = value
-            username = user
-            password = pwd
-        }
-
     private fun init() {
         when (val landingResult = connectPortalCommunicator.checkConnection()) {
             is ResultType.Error -> throw landingResult.throwable
@@ -91,6 +83,11 @@ class NautaApi(
                 }
             }
         }
+    }
+
+    fun setCredentials(username: String, password: String) {
+        this.username = username
+        this.password = password
     }
 
     fun connect() {
@@ -235,6 +232,7 @@ class NautaApi(
         }
     }
 
+    @JvmOverloads
     fun getConnections(
         connectionsSummary: ConnectionsSummary,
         large: Int = 0,
@@ -256,6 +254,7 @@ class NautaApi(
         return connections.take(internalLarge)
     }
 
+    @JvmOverloads
     fun getRecharges(rechargesSummary: RechargesSummary, large: Int = 0, reversed: Boolean = false): List<Recharge> {
         val recharges = mutableListOf<Recharge>()
         val internalLarge = if (large == 0) rechargesSummary.count else large
@@ -273,6 +272,7 @@ class NautaApi(
         return recharges.take(internalLarge)
     }
 
+    @JvmOverloads
     fun getTransfers(transfersSummary: TransfersSummary, large: Int = 0, reversed: Boolean = false): List<Transfer> {
         val transfers = mutableListOf<Transfer>()
         val internalLarge = if (large == 0) transfersSummary.count else large
@@ -290,6 +290,7 @@ class NautaApi(
         return transfers.take(internalLarge)
     }
 
+    @JvmOverloads
     fun getQuotesPaid(
         quotesPaidSummary: QuotesPaidSummary,
         large: Int = 0,
