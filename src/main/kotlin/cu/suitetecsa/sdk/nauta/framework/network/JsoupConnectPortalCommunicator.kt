@@ -45,7 +45,12 @@ class JsoupConnectPortalCommunicator(private val nautaSession: NautaSession) : C
     override fun getLoginPage(url: String, data: Map<String, String>): ResultType<String?> {
         return when (val response = nautaSession.post(url, data)) {
             is ResultType.Error -> ResultType.Error(response.throwable)
-            is ResultType.Success -> ResultType.Success(response.result.text)
+            is ResultType.Success -> {
+                response.result.cookies?.forEach { (key, value) ->
+                    nautaSession.cookies[key] = value
+                }
+                ResultType.Success(response.result.text)
+            }
         }
     }
 

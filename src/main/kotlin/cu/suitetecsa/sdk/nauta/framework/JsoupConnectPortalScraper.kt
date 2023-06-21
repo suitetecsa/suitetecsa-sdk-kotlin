@@ -11,7 +11,7 @@ import cu.suitetecsa.sdk.nauta.framework.model.ResultType
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Element
 
-internal class JsoupConnectPortalScraper : ConnectPortalScraper {
+class JsoupConnectPortalScraper : ConnectPortalScraper {
     private fun getInputs(formSoup: Element): Map<String, String> {
         val inputs = mutableMapOf<String, String>()
         for (input in formSoup.select("input[name]")) {

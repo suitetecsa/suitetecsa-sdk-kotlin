@@ -7,7 +7,7 @@ import cu.suitetecsa.sdk.nauta.framework.model.HttpResponse
 import cu.suitetecsa.sdk.nauta.framework.model.ResultType
 import org.jsoup.Connection
 
-internal class DefaultNautaSession : NautaSession {
+class DefaultNautaSession : NautaSession {
     override val cookies = mutableMapOf<String, String>()
     private var portalManager: Portal = Portal.CONNECT
 

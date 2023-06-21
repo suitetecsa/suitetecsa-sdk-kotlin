@@ -7,7 +7,7 @@ import cu.suitetecsa.sdk.nauta.framework.model.ResultType
 import cu.suitetecsa.sdk.nauta.domain.model.*
 import org.jsoup.Jsoup
 
-internal class JsoupUserPortalScrapper : UserPortalScraper {
+class JsoupUserPortalScrapper : UserPortalScraper {
     override fun parseErrors(html: String): ResultType<String> {
         val htmlParsed = Jsoup.parse(html)
         return try {
