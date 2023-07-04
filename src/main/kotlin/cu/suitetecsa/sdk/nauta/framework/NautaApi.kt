@@ -161,43 +161,63 @@ class NautaApi(
     }
 
     fun topUp(rechargeCode: String) {
-        if (userPortalCommunicator.csrf.isBlank()) throw LoginException("Session is not initialized")
+        if (userPortalCommunicator.csrf.isBlank()) throw LoginException("Not logged in")
         loadCsrf(Action.RECHARGE)
         when (val result = userPortalCommunicator.topUp(rechargeCode)) {
             is ResultType.Error -> throw result.throwable
-            is ResultType.Success -> {}
+            is ResultType.Success -> {
+                when (val errorResult = userPortalScraper.parseErrors(result.result ?: "")){
+                    is ResultType.Error -> throw errorResult.throwable
+                    is ResultType.Success -> {}
+                }
+            }
         }
     }
 
     fun transferFunds(amount: Float, destinationAccount: String?) {
-        if (userPortalCommunicator.csrf.isBlank()) throw LoginException("Session is not initialized")
+        if (userPortalCommunicator.csrf.isBlank()) throw LoginException("Not logged in")
         loadCsrf(Action.TRANSFER)
         when (val result = userPortalCommunicator.transferFunds(amount, password, destinationAccount)) {
             is ResultType.Error -> throw result.throwable
-            is ResultType.Success -> {}
+            is ResultType.Success -> {
+                when (val errorResult = userPortalScraper.parseErrors(result.result ?: "")){
+                    is ResultType.Error -> throw errorResult.throwable
+                    is ResultType.Success -> {}
+                }
+            }
         }
     }
 
     fun changePassword(newPassword: String) {
-        if (userPortalCommunicator.csrf.isBlank()) throw LoginException("Session is not initialized")
+        if (userPortalCommunicator.csrf.isBlank()) throw LoginException("Not logged in")
         loadCsrf(Action.TRANSFER)
         when (val result = userPortalCommunicator.changePassword(password, newPassword)) {
             is ResultType.Error -> throw result.throwable
-            is ResultType.Success -> {}
+            is ResultType.Success -> {
+                when (val errorResult = userPortalScraper.parseErrors(result.result ?: "")){
+                    is ResultType.Error -> throw errorResult.throwable
+                    is ResultType.Success -> {}
+                }
+            }
         }
     }
 
     fun changeEmailPassword(oldPassword: String, newPassword: String) {
-        if (userPortalCommunicator.csrf.isBlank()) throw LoginException("Session is not initialized")
+        if (userPortalCommunicator.csrf.isBlank()) throw LoginException("Not logged in")
         loadCsrf(Action.TRANSFER)
         when (val result = userPortalCommunicator.changeEmailPassword(oldPassword, newPassword)) {
             is ResultType.Error -> throw result.throwable
-            is ResultType.Success -> {}
+            is ResultType.Success -> {
+                when (val errorResult = userPortalScraper.parseErrors(result.result ?: "")){
+                    is ResultType.Error -> throw errorResult.throwable
+                    is ResultType.Success -> {}
+                }
+            }
         }
     }
 
     fun getConnectionsSummary(year: Int, month: Int): ConnectionsSummary {
-        if (userPortalCommunicator.csrf.isBlank()) throw LoginException("Session is not initialized")
+        if (userPortalCommunicator.csrf.isBlank()) throw LoginException("Not logged in")
         loadCsrf(Action.GET_CONNECTIONS)
         when (val result = userPortalCommunicator.getConnectionsSummary(year, month)) {
             is ResultType.Error -> throw result.throwable
@@ -206,7 +226,7 @@ class NautaApi(
     }
 
     fun getRechargesSummary(year: Int, month: Int): RechargesSummary {
-        if (userPortalCommunicator.csrf.isBlank()) throw LoginException("Session is not initialized")
+        if (userPortalCommunicator.csrf.isBlank()) throw LoginException("Not logged in")
         loadCsrf(Action.GET_RECHARGES)
         when (val result = userPortalCommunicator.getRechargesSummary(year, month)) {
             is ResultType.Error -> throw result.throwable
@@ -215,7 +235,7 @@ class NautaApi(
     }
 
     fun getTransfersSummary(year: Int, month: Int): TransfersSummary {
-        if (userPortalCommunicator.csrf.isBlank()) throw LoginException("Session is not initialized")
+        if (userPortalCommunicator.csrf.isBlank()) throw LoginException("Not logged in")
         loadCsrf(Action.GET_TRANSFERS)
         when (val result = userPortalCommunicator.getTransfersSummary(year, month)) {
             is ResultType.Error -> throw result.throwable
@@ -224,7 +244,7 @@ class NautaApi(
     }
 
     fun getQuotesPaidSummary(year: Int, month: Int): QuotesPaidSummary {
-        if (userPortalCommunicator.csrf.isBlank()) throw LoginException("Session is not initialized")
+        if (userPortalCommunicator.csrf.isBlank()) throw LoginException("Not logged in")
         loadCsrf(Action.GET_QUOTES_PAID)
         when (val result = userPortalCommunicator.getQuotesPaidSummary(year, month)) {
             is ResultType.Error -> throw result.throwable
