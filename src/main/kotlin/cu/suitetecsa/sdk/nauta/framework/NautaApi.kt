@@ -130,6 +130,7 @@ class NautaApi(
         get() = userPortalCommunicator.captchaImage
     val userInformation: NautaUser
         get() {
+            if (userPortalCommunicator.csrf.isBlank()) throw LoginException("Not logged in")
             when (val result = userPortalCommunicator.userInformation) {
                 is ResultType.Error -> throw result.throwable
                 is ResultType.Success -> {
