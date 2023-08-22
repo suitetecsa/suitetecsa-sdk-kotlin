@@ -77,7 +77,7 @@ internal class NautaSessionImpl(
                 )
             )
         } catch (e: Exception) {
-            ResultType.Error(e)
+            ResultType.Failure(e)
         }
     }
 

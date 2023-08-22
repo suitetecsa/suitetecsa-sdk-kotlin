@@ -59,7 +59,7 @@ class NautaSessionImplTest {
         val result = nautaSession.get("http://example.com")
 
         // Assert
-        result as ResultType.Error
+        result as ResultType.Failure
         assertEquals("Connection error", result.throwable.message)
     }
 
@@ -104,7 +104,7 @@ class NautaSessionImplTest {
         val result = nautaSession.post("http://example.com")
 
         // Assert
-        result as ResultType.Error
+        result as ResultType.Failure
         assertEquals("Connection error", result.throwable.message)
     }
 }

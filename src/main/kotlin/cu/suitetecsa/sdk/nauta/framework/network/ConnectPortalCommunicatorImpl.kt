@@ -37,7 +37,7 @@ internal class ConnectPortalCommunicatorImpl(
         }
 
         return when (response) {
-            is ResultType.Error -> ResultType.Error(response.throwable)
+            is ResultType.Failure -> ResultType.Failure(response.throwable)
             is ResultType.Success -> ResultType.Success(transform(response.result))
         }
     }

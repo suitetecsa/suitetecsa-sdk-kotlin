@@ -10,7 +10,7 @@ import cu.suitetecsa.sdk.nauta.core.exceptions.NautaAttributeException
 import cu.suitetecsa.sdk.nauta.core.exceptions.NautaGetInfoException
 import cu.suitetecsa.sdk.nauta.framework.model.HttpResponse
 import cu.suitetecsa.sdk.nauta.framework.model.ResultType
-import cu.suitetecsa.sdk.nauta.framework.model.ResultType.Error
+import cu.suitetecsa.sdk.nauta.framework.model.ResultType.Failure
 import cu.suitetecsa.sdk.nauta.framework.model.ResultType.Success
 import kotlin.math.ceil
 
@@ -49,7 +49,7 @@ class UserPortalCommunicatorImpl(
         }
 
         return when (response) {
-            is Error -> Error(response.throwable)
+            is Failure -> Failure(response.throwable)
             is Success -> Success(transform(response.result))
         }
     }
@@ -151,7 +151,7 @@ class UserPortalCommunicatorImpl(
                 val page = if (currentPage != 1) currentPage else null
                 val currentUrl = "$url$yearMonthSelected/$count${page?.let { "/$it" } ?: ""}"
                 when (val result = handleResponse(currentUrl, transform = transform)) {
-                    is Error -> return Error(result.throwable)
+                    is Failure -> return Failure(result.throwable)
                     is Success -> {
                         actionList.addAll(result.result)
                     }

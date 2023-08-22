@@ -51,13 +51,13 @@ class UserPortalCommunicatorImplTest {
     fun `test performAction for GET request with error`() {
         // Arrange
         val mockException = Exception("Connection error")
-        every { mockNautaSession.get(any(), any(), any(), any()) } returns ResultType.Error(mockException)
+        every { mockNautaSession.get(any(), any(), any(), any()) } returns ResultType.Failure(mockException)
 
         // Act
         val result = userPortalCommunicator.performAction(Action.GetCaptcha) { it.text }
 
         // Assert
-        result as ResultType.Error
+        result as ResultType.Failure
         assertEquals(mockException, result.throwable)
     }
 

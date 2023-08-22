@@ -22,12 +22,15 @@ internal class UserPortalScrapperImpl : UserPortalScraper {
             ResultType.Success(html)
         } catch (e: Exception) {
             e.printStackTrace()
-            ResultType.Error(e)
+            ResultType.Failure(e)
         }
     }
 
-    override fun parseCsrfToken(html: String): String =
-        Jsoup.parse(html).selectFirst("input[name=csrf]")?.attr("value") ?: ""
+    override fun parseCsrfToken(html: String): String {
+        val htmlParsed = Jsoup.parse(html)
+        htmlParsed.throwExceptionOnFailure("Fail to parse csrf token", User, loadInfoExceptionHandler)
+        return htmlParsed.selectFirst("input[name=csrf]")?.attr("value") ?: ""
+    }
 
     override fun parseNautaUser(html: String, exceptionHandler: ExceptionHandler?): NautaUser {
         val htmlParsed = Jsoup.parse(html)

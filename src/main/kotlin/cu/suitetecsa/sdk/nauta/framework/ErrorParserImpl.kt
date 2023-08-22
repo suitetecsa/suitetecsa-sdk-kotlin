@@ -22,7 +22,7 @@ internal class ErrorParserImpl : ErrorParser {
             ResultType.Success(html)
         } catch (e: Exception) {
             e.printStackTrace()
-            ResultType.Error(e)
+            ResultType.Failure(e)
         }
     }
 }

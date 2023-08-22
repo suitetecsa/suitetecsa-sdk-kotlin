@@ -1,7 +1,6 @@
 package cu.suitetecsa.sdk.nauta.framework.network
 
 import cu.suitetecsa.sdk.nauta.core.Action
-import cu.suitetecsa.sdk.nauta.core.ActionType
 import cu.suitetecsa.sdk.nauta.framework.model.HttpResponse
 import cu.suitetecsa.sdk.nauta.framework.model.ResultType
 import io.mockk.every
@@ -9,8 +8,6 @@ import io.mockk.mockk
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
-import java.io.BufferedReader
-import java.io.InputStreamReader
 
 class ConnectPortalCommunicatorImplTest {
 
@@ -41,13 +38,13 @@ class ConnectPortalCommunicatorImplTest {
     fun `test performAction for GET request with error`() {
         // Arrange
         val mockException = Exception("Connection error")
-        every { mockNautaSession.get(any(), any()) } returns ResultType.Error(mockException)
+        every { mockNautaSession.get(any(), any()) } returns ResultType.Failure(mockException)
 
         // Act
         val result = connectPortalCommunicator.performAction(Action.CheckConnection()) { it.text }
 
         // Assert
-        result as ResultType.Error
+        result as ResultType.Failure
         assertEquals(mockException, result.throwable)
     }
 
@@ -74,7 +71,7 @@ class ConnectPortalCommunicatorImplTest {
     fun `test performAction for POST request with error`() {
         // Arrange
         val mockException = Exception("Connection error")
-        every { mockNautaSession.post(any(), any()) } returns ResultType.Error(mockException)
+        every { mockNautaSession.post(any(), any()) } returns ResultType.Failure(mockException)
 
         // Act
         val result = connectPortalCommunicator.performAction(
@@ -85,7 +82,7 @@ class ConnectPortalCommunicatorImplTest {
         ) { it.statusMessage }
 
         // Assert
-        result as ResultType.Error
+        result as ResultType.Failure
         assertEquals(mockException, result.throwable)
     }
 
