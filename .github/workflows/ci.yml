@@ -35,4 +35,4 @@ jobs:
         uses: jojo243/android-gradle-action@2.1.3
         with:
           # The ./gradlew command arguments
-          script: ./gradlew :test
+          script: :test
