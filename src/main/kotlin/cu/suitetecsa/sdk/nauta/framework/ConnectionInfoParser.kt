@@ -1,21 +1,12 @@
 package cu.suitetecsa.sdk.nauta.framework
 
 import cu.suitetecsa.sdk.nauta.framework.model.NautaConnectInformation
-import cu.suitetecsa.sdk.nauta.framework.model.ResultType
 
 /**
- * Interfaz que define un scraper para analizar contenido HTML en el portal de conexión.
- * Proporciona métodos para extraer información específica y transformarla en objetos y resultados.
+ * Interfaz que define un parser para analizar información relacionada con la conexión.
+ * Proporciona métodos para analizar HTML y extraer información específica.
  */
-interface ConnectPortalScraper {
-    /**
-     * Analiza el HTML para extraer mensajes de error y encapsularlos en un objeto `ResultType`.
-     *
-     * @param html El contenido HTML a analizar.
-     * @return Un objeto `ResultType` que contiene el mensaje de error o éxito.
-     */
-    fun parseErrors(html: String): ResultType<String>
-
+interface ConnectionInfoParser {
     /**
      * Analiza el HTML para verificar si hay conexiones disponibles.
      *
@@ -23,22 +14,6 @@ interface ConnectPortalScraper {
      * @return `true` si hay conexiones disponibles, de lo contrario, `false`.
      */
     fun parseCheckConnections(html: String): Boolean
-
-    /**
-     * Analiza el HTML para extraer información y datos del formulario de acción.
-     *
-     * @param html El contenido HTML a analizar.
-     * @return Un par que contiene la URL del formulario y un mapa de datos.
-     */
-    fun parseActionForm(html: String): Pair<String, Map<String, String>>
-
-    /**
-     * Analiza el HTML para extraer información y datos del formulario de inicio de sesión.
-     *
-     * @param html El contenido HTML a analizar.
-     * @return Un par que contiene la URL del formulario y un mapa de datos.
-     */
-    fun parseLoginForm(html: String): Pair<String, Map<String, String>>
 
     /**
      * Analiza el HTML para extraer información de conexión de Nauta.
@@ -52,7 +27,7 @@ interface ConnectPortalScraper {
      * Analiza el HTML para extraer el tiempo restante de la conexión.
      *
      * @param html El contenido HTML a analizar.
-     * @return El tiempo restante de la conexión en segundos.
+     * @return El tiempo restante de la conexión en milisegundos.
      */
     fun parseRemainingTime(html: String): Long
 

@@ -2,7 +2,7 @@ package cu.suitetecsa.sdk.nauta.framework.model
 
 class HttpResponse(
     val statusCode: Int,
-    val statusMassage: String,
+    val statusMessage: String,
     val content: ByteArray?,
     val cookies: Map<String, String>?
 ) {
@@ -16,7 +16,7 @@ class HttpResponse(
         other as HttpResponse
 
         if (statusCode != other.statusCode) return false
-        if (statusMassage != other.statusMassage) return false
+        if (statusMessage != other.statusMessage) return false
         if (content != null) {
             if (other.content == null) return false
             if (!content.contentEquals(other.content)) return false
@@ -27,7 +27,7 @@ class HttpResponse(
 
     override fun hashCode(): Int {
         var result = statusCode
-        result = 31 * result + statusMassage.hashCode()
+        result = 31 * result + statusMessage.hashCode()
         result = 31 * result + (content?.contentHashCode() ?: 0)
         return result
     }

@@ -1,10 +1,10 @@
-# suitetecsa-sdk-kotlin
+# SuitEtecsa SDK Kotlin
 
 [![](https://jitpack.io/v/suitetecsa/suitetecsa-sdk-kotlin.svg)](https://jitpack.io/#suitetecsa/suitetecsa-sdk-kotlin)
 
-`suitetecs-sdk-kotlin` es una herramienta diseñada para interactuar con los servicios de [ETECSA](https://www.etecsa.cu/). La librería utiliza técnicas de scrapping para acceder a los portales de [acceso a internet ](https://secure.etecsa.net:8443/)y de [usuario](https://www.portal.nauta.cu/) de Nauta. Implementa funciones para todas las operaciones disponibles en ambos portales, y ofrece soporte para Nauta Hogar.
+`SuitEtecsa SDK` es una herramienta diseñada para interactuar con los servicios de [ETECSA](https://www.etecsa.cu/). La librería utiliza técnicas de scrapping para acceder a los portales de [acceso a internet ](https://secure.etecsa.net:8443/)y de [usuario](https://www.portal.nauta.cu/) de Nauta. Implementa funciones para todas las operaciones disponibles en ambos portales, y ofrece soporte para Nauta Hogar.
 
-Todas las funcionalidades están disponibles desde una única clase, `NautaApi`, lo que permite interactuar con ambos portales a la vez, permitiendo obtener datos de manera rápida y eficiente, ahorrando tiempo y esfuerzos a la hora de desarrollar aplicaciones que busquen gestionar los servicios de [ETECSA](https://www.etecsa.cu/). Además, incluye funcionalidades útiles como la generación de contraseñas y la compartición de sesión.
+Todas las funcionalidades están disponibles desde una única clase, `UserAPI`, lo que permite interactuar con ambos portales a la vez, permitiendo obtener datos de manera rápida y eficiente, ahorrando tiempo y esfuerzos a la hora de desarrollar aplicaciones que busquen gestionar los servicios de [ETECSA](https://www.etecsa.cu/). Además, incluye funcionalidades útiles como la generación de contraseñas y la compartición de sesión.
 
 Se han seguido los principios SOLID en su desarrollo, lo que garantiza que es fácil de entender, modificar y mantener. La mayoría de la información devuelta por las funciones son objetos, lo que simplifica el trabajo de las aplicaciones que lo utilizan.
 
@@ -45,34 +45,18 @@ Al ser un proyecto open-source, se valoran y se reciben contribuciones de la com
 
 # Uso
 
-Importa `suitetecsa-sdk-kotlin` en tu proyecto
+Importa `SuitEtecsa SDK` en tu proyecto
 
 ```groovy
-implementation("com.github.suitetecsa:suitetecsa-sdk-kotlin:0.2-alpha01")
+implementation("com.github.suitetecsa:sdk-kotlin:1.0b1")
 ```
 
-Importal `NautaSession`, `JsoupConnectPortalCommunicator`, `JsoupConnectPortalScraper`, `JsoupUserPortalCommunicator`, `JsoupUserPortalScrapper` y `NautaApi`
-
-```kotlin
-import cu.suitetecsa.sdk.nauta.framework.network.JsoupConnectPortalCommunicator
-import cu.suitetecsa.sdk.nauta.framework.network.JsoupUserPortalCommunicator
-import cu.suitetecsa.sdk.nauta.framework.network.DefaultNautaSession
-import cu.suitetecsa.sdk.nauta.framework.JsoupConnectPortalScraper
-import cu.suitetecsa.sdk.nauta.framework.JsoupUserPortalScrapper
-import cu.suitetecsa.sdk.nauta.framework.NautaApi
-```
-
-Crea las instancias necesarias o inyectalas
+Instancia UserApi
 
 ```kotlin
     val userSession = DefaultNautaSession()
     val connectSession = DefaultNautaSession()
-    val api = NautaApi(
-      JsoupConnectPortalCommunicator(connectSession),
-      JsoupConnectPortalScraper(),
-      JsoupUserPortalCommunicator(userSession),
-      JsoupUserPortalScrapper()
-    )
+    val api = UserAPI.builder().build()
 ```
 
 Establece las credenciales que usaras para iniciar sesion
@@ -90,7 +74,7 @@ Conectate a internet desde la wifi o Nauta Hogar
     val remainingTime = api.remainingTime
 ```
 
-Interactua con el portal de usuario
+Interactúa con el portal de usuario
 
 ```kotlin
     // Para hacer login en el portal de usuario

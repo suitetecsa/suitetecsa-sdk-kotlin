@@ -1,4 +1,4 @@
-name: Build
+name: Java CI with Gradle
 
 on:
   push:
@@ -25,8 +25,7 @@ jobs:
           java-version: '11'
           cache: 'gradle'
 
-      - name: Setup Gradle
-        uses: gradle/gradle-build-action@v2
-
       - name: Build with Gradle
-        run: ./gradlew build
+        uses: gradle/gradle-build-action@bd5760595778326ba7f1441bcf7e88b49de61a25
+        with:
+          arguments: build
