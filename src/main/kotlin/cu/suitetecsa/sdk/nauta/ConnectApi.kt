@@ -56,7 +56,6 @@ class ConnectApi(
         }
 
     var dataSession: DataSession = DataSession("", "", "", "")
-        private set
 
     val remainingTime: ResultType<Long>
         get() {
@@ -115,20 +114,36 @@ class ConnectApi(
         this.password = password
     }
 
-    fun connect() {
-        when (val it = isConnected) {
-            is Failure -> {
-                throw it.throwable
-            }
+    fun connect(): ResultType<String> {
+        val loginExceptionHandler = ExceptionHandler.builder(LoginException::class.java).build()
 
-            is Success -> {
-                if (it.result) throw LoginException("You are logged in")
-            }
+        when (val it = isConnected) {
+            is Failure -> return Failure(
+                loginExceptionHandler.handleException(
+                    "Failed to connect",
+                    listOf(it.throwable.message ?: "")
+                )
+            )
+
+            is Success -> if (it.result) return Failure(
+                loginExceptionHandler.handleException(
+                    "Fail to connect",
+                    listOf("Already connected")
+                )
+            )
         }
 
-        if (username.isBlank() || password.isBlank()) throw LoginException("username and password are required")
+        if (username.isBlank() || password.isBlank())
+            return Failure(
+                loginExceptionHandler.handleException(
+                    "Fail to connect",
+                    listOf("username and password are required")
+                )
+            )
+
         init()
-        when (val result = connectPortalCommunicator.performAction(
+
+        connectPortalCommunicator.performAction(
             Login(
                 csrf = csrfHw,
                 wlanUserIp = wlanUserIp,
@@ -137,29 +152,71 @@ class ConnectApi(
                 portal = Connect
             )
         ) {
-            connectPortalScraper.parseAttributeUUID(it.text ?: "")
-        }
-        ) {
-            is Failure -> throw result.throwable
-            is Success -> {
-                if (result.result.isBlank()) throw OperationException("")
-                dataSession = DataSession(username, csrfHw, wlanUserIp, result.result)
+            try {
+                connectPortalScraper.parseAttributeUUID(it.text ?: "")
+            } catch (exc: LoadInfoException) {
+                ""
+            }
+        }.also {
+            return when (it) {
+                is Failure -> return it
+                is Success -> {
+                    if (it.result.isBlank()) Failure(
+                        loginExceptionHandler.handleException(
+                            "Fail to connect",
+                            listOf("Unknown error")
+                        )
+                    )
+                    else {
+                        dataSession = DataSession(username, csrfHw, wlanUserIp, it.result)
+                        Success("Connected")
+                    }
+                }
             }
         }
     }
 
-    fun disconnect() {
-        when (val it = isConnected) {
-            is Failure -> throw it.throwable
-            is Success -> {
-                when (val result =
-                    connectPortalCommunicator.performAction(Logout(username, wlanUserIp, csrfHw, attributeUUID)) {
-                        connectPortalScraper.isSuccessLogout(it.text ?: "")
-                    }) {
-                    is Failure -> throw result.throwable
-                    is Success -> {
-                        if (!result.result) throw LogoutException("Fail to logout")
-                        dataSession = DataSession("", "", "", "")
+    fun disconnect(): ResultType<String> {
+        val logoutExceptionHandler = ExceptionHandler.builder(LogoutException::class.java).build()
+        isConnected.also {
+            when (it) {
+                is Failure -> return Failure(
+                    logoutExceptionHandler.handleException(
+                        "Failed to disconnect",
+                        listOf(it.throwable.message ?: "Unknown exception")
+                    )
+                )
+
+                is Success -> {
+                    connectPortalCommunicator.performAction(
+                        Logout(
+                            username,
+                            wlanUserIp,
+                            csrfHw,
+                            attributeUUID
+                        )
+                    ) { response ->
+                        connectPortalScraper.isSuccessLogout(response.text ?: "")
+                    }.also { logoutResult ->
+                        return when (logoutResult) {
+                            is Failure -> Failure(
+                                logoutExceptionHandler.handleException(
+                                    "Failed to disconnect",
+                                    listOf(logoutResult.throwable.message ?: "Unknown exception")
+                                )
+                            )
+
+                            is Success -> if (!logoutResult.result) Failure(
+                                logoutExceptionHandler.handleException(
+                                    "Failed to disconnect",
+                                    listOf("")
+                                )
+                            )
+                            else {
+                                dataSession = DataSession("", "", "", "")
+                                Success("Disconnected")
+                            }
+                        }
                     }
                 }
             }
@@ -209,10 +266,12 @@ class ConnectApi(
 
     fun topUp(rechargeCode: String): ResultType<NautaUser> {
         val preAction = ActionRecharge(rechargeCode = rechargeCode)
-        if (csrf.isBlank()) return Failure(notLoggedInExceptionHandler.handleException(
-            "Failed to top up",
-            listOf("You are not logged in")
-        ))
+        if (csrf.isBlank()) return Failure(
+            notLoggedInExceptionHandler.handleException(
+                "Failed to top up",
+                listOf("You are not logged in")
+            )
+        )
         loadCsrf(preAction)
         val action = ActionRecharge(csrf = csrf, rechargeCode = rechargeCode)
         return when (val result = userPortalCommunicator.performAction(action) {
@@ -229,10 +288,12 @@ class ConnectApi(
 
     fun transferFunds(amount: Float, destinationAccount: String?): ResultType<NautaUser> {
         val preAction = Action.Transfer(amount = amount, destinationAccount = destinationAccount, password = password)
-        if (csrf.isBlank()) return Failure(notLoggedInExceptionHandler.handleException(
-            "Failed to transfer funds",
-            listOf("You are not logged in")
-        ))
+        if (csrf.isBlank()) return Failure(
+            notLoggedInExceptionHandler.handleException(
+                "Failed to transfer funds",
+                listOf("You are not logged in")
+            )
+        )
         loadCsrf(preAction)
         val action =
             Action.Transfer(csrf = csrf, amount = amount, destinationAccount = destinationAccount, password = password)
@@ -246,10 +307,12 @@ class ConnectApi(
 
     fun changePassword(newPassword: String): ResultType<String> {
         val preAction = ChangePassword(oldPassword = password, newPassword = newPassword)
-        if (csrf.isBlank()) return Failure(notLoggedInExceptionHandler.handleException(
-            "Failed to change password",
-            listOf("You are not logged in")
-        ))
+        if (csrf.isBlank()) return Failure(
+            notLoggedInExceptionHandler.handleException(
+                "Failed to change password",
+                listOf("You are not logged in")
+            )
+        )
         loadCsrf(preAction)
         val action = ChangePassword(csrf = csrf, oldPassword = password, newPassword = newPassword)
         return when (val result = userPortalCommunicator.performAction(action) {
@@ -262,9 +325,12 @@ class ConnectApi(
 
     fun changeEmailPassword(oldPassword: String, newPassword: String): ResultType<String> {
         val preAction = ChangePassword(oldPassword = oldPassword, newPassword = newPassword, changeMail = true)
-        if (csrf.isBlank()) return Failure(notLoggedInExceptionHandler.handleException(
-            "Failed to change email password",
-            listOf("You are not logged in")))
+        if (csrf.isBlank()) return Failure(
+            notLoggedInExceptionHandler.handleException(
+                "Failed to change email password",
+                listOf("You are not logged in")
+            )
+        )
         loadCsrf(preAction)
         val action =
             ChangePassword(csrf = csrf, oldPassword = oldPassword, newPassword = newPassword, changeMail = true)
