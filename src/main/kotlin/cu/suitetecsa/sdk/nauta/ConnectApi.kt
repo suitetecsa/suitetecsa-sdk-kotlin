@@ -1,35 +1,32 @@
 package cu.suitetecsa.sdk.nauta
 
-import cu.suitetecsa.sdk.nauta.core.Action
-import cu.suitetecsa.sdk.nauta.core.Action.*
-import cu.suitetecsa.sdk.nauta.core.ActionType
-import cu.suitetecsa.sdk.nauta.core.ExceptionHandler
 import cu.suitetecsa.sdk.nauta.core.PortalManager.Connect
 import cu.suitetecsa.sdk.nauta.core.PortalManager.User
 import cu.suitetecsa.sdk.nauta.core.exceptions.*
 import cu.suitetecsa.sdk.nauta.core.extensions.toSeconds
 import cu.suitetecsa.sdk.nauta.domain.model.*
 import cu.suitetecsa.sdk.nauta.domain.model.Recharge
+import cu.suitetecsa.sdk.nauta.domain.model.ResultType.Failure
+import cu.suitetecsa.sdk.nauta.domain.model.ResultType.Success
 import cu.suitetecsa.sdk.nauta.domain.model.Transfer
-import cu.suitetecsa.sdk.nauta.framework.ConnectPortalScraper
-import cu.suitetecsa.sdk.nauta.framework.ConnectPortalScraperImpl
-import cu.suitetecsa.sdk.nauta.framework.UserPortalScraper
-import cu.suitetecsa.sdk.nauta.framework.UserPortalScrapperImpl
-import cu.suitetecsa.sdk.nauta.framework.model.DataSession
-import cu.suitetecsa.sdk.nauta.framework.model.NautaConnectInformation
-import cu.suitetecsa.sdk.nauta.framework.model.ResultType
-import cu.suitetecsa.sdk.nauta.framework.model.ResultType.Failure
-import cu.suitetecsa.sdk.nauta.framework.model.ResultType.Success
-import cu.suitetecsa.sdk.nauta.framework.network.ConnectPortalCommunicator
-import cu.suitetecsa.sdk.nauta.framework.network.ConnectPortalCommunicatorImpl
-import cu.suitetecsa.sdk.nauta.framework.network.UserPortalCommunicator
-import cu.suitetecsa.sdk.nauta.framework.network.UserPortalCommunicatorImpl
-import cu.suitetecsa.sdk.nauta.core.Action.Recharge as ActionRecharge
+import cu.suitetecsa.sdk.nauta.scraper.ConnectPortalScraper
+import cu.suitetecsa.sdk.nauta.scraper.ConnectPortalScraperImpl
+import cu.suitetecsa.sdk.nauta.scraper.UserPortalScraper
+import cu.suitetecsa.sdk.nauta.scraper.UserPortalScrapperImpl
+import cu.suitetecsa.sdk.nauta.util.*
+import cu.suitetecsa.sdk.network.Action
+import cu.suitetecsa.sdk.network.HttpResponse
+import cu.suitetecsa.sdk.network.JsoupPortalCommunicator
+import cu.suitetecsa.sdk.network.PortalCommunicator
+import cu.suitetecsa.sdk.util.ExceptionHandler
+import kotlin.math.ceil
+import cu.suitetecsa.sdk.nauta.util.Recharge as ActionRecharge
+import cu.suitetecsa.sdk.nauta.util.Transfer as ActionTransfer
 
 class ConnectApi(
-    private val connectPortalCommunicator: ConnectPortalCommunicator,
+    private val portalCommunicator: PortalCommunicator,
     private val connectPortalScraper: ConnectPortalScraper,
-    private val userPortalCommunicator: UserPortalCommunicator,
+    private val userPortalCommunicator: PortalCommunicator,
     private val userPortalScraper: UserPortalScraper
 ) {
     private var username = ""
@@ -50,7 +47,7 @@ class ConnectApi(
 
     val isConnected: ResultType<Boolean>
         get() {
-            return connectPortalCommunicator.performAction(CheckConnection()) {
+            return portalCommunicator.performAction(CheckConnection()) {
                 connectPortalScraper.parseCheckConnections(it.text ?: "")
             }
         }
@@ -59,7 +56,7 @@ class ConnectApi(
 
     val remainingTime: ResultType<Long>
         get() {
-            return connectPortalCommunicator.performAction(
+            return portalCommunicator.performAction(
                 LoadUserInformation(
                     username = username,
                     wlanUserIp = wlanUserIp,
@@ -74,7 +71,7 @@ class ConnectApi(
         get() {
             if (username.isBlank() || password.isBlank()) throw LoginException("username and password are required")
             if (csrfHw.isBlank()) init()
-            return connectPortalCommunicator.performAction(
+            return portalCommunicator.performAction(
                 LoadUserInformation(
                     username = username,
                     password = password,
@@ -88,13 +85,13 @@ class ConnectApi(
         }
 
     private fun init() {
-        when (val landingResult = connectPortalCommunicator.performAction(CheckConnection()) {
+        when (val landingResult = portalCommunicator.performAction(CheckConnection()) {
             connectPortalScraper.parseActionForm(it.text ?: "")
         }) {
             is Failure -> throw landingResult.throwable
             is Success -> {
                 val (action, data) = landingResult.result
-                when (val loginResult = connectPortalCommunicator.performAction(Action.GetPage(action, data)) {
+                when (val loginResult = portalCommunicator.performAction(GetPage(action, data)) {
                     connectPortalScraper.parseActionForm(it.text ?: "")
                 }) {
                     is Failure -> throw loginResult.throwable
@@ -143,7 +140,7 @@ class ConnectApi(
 
         init()
 
-        connectPortalCommunicator.performAction(
+        portalCommunicator.performAction(
             Login(
                 csrf = csrfHw,
                 wlanUserIp = wlanUserIp,
@@ -188,7 +185,7 @@ class ConnectApi(
                 )
 
                 is Success -> {
-                    connectPortalCommunicator.performAction(
+                    portalCommunicator.performAction(
                         Logout(
                             username,
                             wlanUserIp,
@@ -238,7 +235,7 @@ class ConnectApi(
 
     private fun loadCsrf(action: Action) {
         when (val csrfResult =
-            userPortalCommunicator.loadCsrf("https://www.portal.nauta.cu${action.csrfUrl ?: action.route}") {
+            userPortalCommunicator.performAction("https://www.portal.nauta.cu${action.csrfUrl() ?: action.url()}") {
                 userPortalScraper.parseCsrfToken(it.text ?: "")
             }) {
             is Failure -> throw csrfResult.throwable
@@ -249,10 +246,21 @@ class ConnectApi(
     }
 
     fun login(captchaCode: String): ResultType<NautaUser> {
-        val preAction = Login(username = username, password = password, captchaCode = captchaCode, portal = User)
+        val preAction = Login(
+            username = username,
+            password = password,
+            captchaCode = captchaCode,
+            portal = User
+        )
         if (csrf.isBlank()) loadCsrf(preAction)
         val action =
-            Login(csrf = csrf, username = username, password = password, captchaCode = captchaCode, portal = User)
+            Login(
+                csrf = csrf,
+                username = username,
+                password = password,
+                captchaCode = captchaCode,
+                portal = User
+            )
         return userPortalCommunicator.performAction(action) {
             val user =
                 userPortalScraper.parseNautaUser(
@@ -287,7 +295,7 @@ class ConnectApi(
     }
 
     fun transferFunds(amount: Float, destinationAccount: String?): ResultType<NautaUser> {
-        val preAction = Action.Transfer(amount = amount, destinationAccount = destinationAccount, password = password)
+        val preAction = ActionTransfer(amount = amount, destinationAccount = destinationAccount, password = password)
         if (csrf.isBlank()) return Failure(
             notLoggedInExceptionHandler.handleException(
                 "Failed to transfer funds",
@@ -296,7 +304,7 @@ class ConnectApi(
         )
         loadCsrf(preAction)
         val action =
-            Action.Transfer(csrf = csrf, amount = amount, destinationAccount = destinationAccount, password = password)
+            ActionTransfer(csrf = csrf, amount = amount, destinationAccount = destinationAccount, password = password)
         return when (val result = userPortalCommunicator.performAction(action) {
             userPortalScraper.parseErrors(it.text ?: "")
         }) {
@@ -306,7 +314,10 @@ class ConnectApi(
     }
 
     fun changePassword(newPassword: String): ResultType<String> {
-        val preAction = ChangePassword(oldPassword = password, newPassword = newPassword)
+        val preAction = ChangePassword(
+            oldPassword = password,
+            newPassword = newPassword
+        )
         if (csrf.isBlank()) return Failure(
             notLoggedInExceptionHandler.handleException(
                 "Failed to change password",
@@ -314,7 +325,11 @@ class ConnectApi(
             )
         )
         loadCsrf(preAction)
-        val action = ChangePassword(csrf = csrf, oldPassword = password, newPassword = newPassword)
+        val action = ChangePassword(
+            csrf = csrf,
+            oldPassword = password,
+            newPassword = newPassword
+        )
         return when (val result = userPortalCommunicator.performAction(action) {
             userPortalScraper.parseErrors(it.text ?: "")
         }) {
@@ -324,7 +339,11 @@ class ConnectApi(
     }
 
     fun changeEmailPassword(oldPassword: String, newPassword: String): ResultType<String> {
-        val preAction = ChangePassword(oldPassword = oldPassword, newPassword = newPassword, changeMail = true)
+        val preAction = ChangePassword(
+            oldPassword = oldPassword,
+            newPassword = newPassword,
+            changeMail = true
+        )
         if (csrf.isBlank()) return Failure(
             notLoggedInExceptionHandler.handleException(
                 "Failed to change email password",
@@ -333,7 +352,12 @@ class ConnectApi(
         )
         loadCsrf(preAction)
         val action =
-            ChangePassword(csrf = csrf, oldPassword = oldPassword, newPassword = newPassword, changeMail = true)
+            ChangePassword(
+                csrf = csrf,
+                oldPassword = oldPassword,
+                newPassword = newPassword,
+                changeMail = true
+            )
         return when (val result = userPortalCommunicator.performAction(action) {
             userPortalScraper.parseErrors(it.text ?: "")
         }) {
@@ -343,52 +367,88 @@ class ConnectApi(
     }
 
     fun getConnectionsSummary(year: Int, month: Int): ResultType<ConnectionsSummary> {
-        val preAction = GetSummary(year = year, month = month, type = ActionType.Connections)
+        val preAction = GetSummary(
+            year = year,
+            month = month,
+            type = ActionType.Connections
+        )
         if (csrf.isBlank()) throw notLoggedInExceptionHandler.handleException(
             "Failed to get connections summary",
             listOf("You are not logged in")
         )
         loadCsrf(preAction)
-        val action = GetSummary(csrf = csrf, year = year, month = month, type = ActionType.Connections)
+        val action = GetSummary(
+            csrf = csrf,
+            year = year,
+            month = month,
+            type = ActionType.Connections
+        )
         return userPortalCommunicator.performAction(action) {
             userPortalScraper.parseConnectionsSummary(it.text ?: "")
         }
     }
 
     fun getRechargesSummary(year: Int, month: Int): ResultType<RechargesSummary> {
-        val preAction = GetSummary(year = year, month = month, type = ActionType.Recharges)
+        val preAction = GetSummary(
+            year = year,
+            month = month,
+            type = ActionType.Recharges
+        )
         if (csrf.isBlank()) throw notLoggedInExceptionHandler.handleException(
             "Failed to get connections summary",
             listOf("You are not logged in")
         )
         loadCsrf(preAction)
-        val action = GetSummary(csrf = csrf, year = year, month = month, type = ActionType.Recharges)
+        val action = GetSummary(
+            csrf = csrf,
+            year = year,
+            month = month,
+            type = ActionType.Recharges
+        )
         return userPortalCommunicator.performAction(action) {
             userPortalScraper.parseRechargesSummary(it.text ?: "")
         }
     }
 
     fun getTransfersSummary(year: Int, month: Int): ResultType<TransfersSummary> {
-        val preAction = GetSummary(year = year, month = month, type = ActionType.Transfers)
+        val preAction = GetSummary(
+            year = year,
+            month = month,
+            type = ActionType.Transfers
+        )
         if (csrf.isBlank()) throw notLoggedInExceptionHandler.handleException(
             "Failed to get transfers summary",
             listOf("You are not logged in")
         )
         loadCsrf(preAction)
-        val action = GetSummary(csrf = csrf, year = year, month = month, type = ActionType.Transfers)
+        val action = GetSummary(
+            csrf = csrf,
+            year = year,
+            month = month,
+            type = ActionType.Transfers
+        )
         return userPortalCommunicator.performAction(action) {
             userPortalScraper.parseTransfersSummary(it.text ?: "")
         }
     }
 
     fun getQuotesPaidSummary(year: Int, month: Int): ResultType<QuotesPaidSummary> {
-        val preAction = GetSummary(year = year, month = month, type = ActionType.QuotesPaid)
+        val preAction = GetSummary(
+            year = year,
+            month = month,
+            type = ActionType.QuotesPaid
+        )
         if (csrf.isBlank()) throw notLoggedInExceptionHandler.handleException(
             "Failed to get quotes paid summary",
             listOf("You are not logged in")
         )
         loadCsrf(preAction)
-        val action = GetSummary(csrf = csrf, year = year, month = month, type = ActionType.QuotesPaid)
+        val action = GetSummary(
+            csrf = csrf,
+            year = year,
+            month = month,
+            type = ActionType.QuotesPaid
+        )
         return userPortalCommunicator.performAction(action) {
             userPortalScraper.parseQuotesPaidSummary(it.text ?: "")
         }
@@ -413,7 +473,7 @@ class ConnectApi(
                 reversed,
                 ActionType.Connections
             )
-            return userPortalCommunicator.performListAction(action) {
+            return getActions(action) {
                 val connects = userPortalScraper.parseConnections(it.text ?: "")
                 if (reversed) connects.reversed() else connects
             }
@@ -440,7 +500,7 @@ class ConnectApi(
                 reversed,
                 ActionType.Connections
             )
-            return userPortalCommunicator.performListAction(action) {
+            return getActions(action) {
                 val recharges = userPortalScraper.parseRecharges(it.text ?: "")
                 if (reversed) recharges.reversed() else recharges
             }
@@ -467,7 +527,7 @@ class ConnectApi(
                 reversed,
                 ActionType.Connections
             )
-            return userPortalCommunicator.performListAction(action) {
+            return getActions(action) {
                 val transfers = userPortalScraper.parseTransfers(it.text ?: "")
                 if (reversed) transfers.reversed() else transfers
             }
@@ -494,7 +554,7 @@ class ConnectApi(
                 reversed,
                 ActionType.Connections
             )
-            return userPortalCommunicator.performListAction(action) {
+            return getActions(action) {
                 val quotesPaid = userPortalScraper.parseQuotesPaid(it.text ?: "")
                 if (reversed) quotesPaid.reversed() else quotesPaid
             }
@@ -502,14 +562,45 @@ class ConnectApi(
         return Success(emptyList())
     }
 
+    private fun <T> getActions(
+        action: Action,
+        transform: (HttpResponse) -> List<T>
+    ): ResultType<List<T>> {
+        val large = action.large()
+        val count = action.count()
+        val reversed = action.reversed()
+        val yearMonthSelected = action.yearMonthSelected()
+        val url = action.url()
+
+        val actionList = mutableListOf<T>()
+        val internalLarge = if (large == 0 || large > count) count else large
+        if (count != 0) {
+            val totalPages = ceil(count.toDouble() / 14.0).toInt()
+            var currentPage = if (reversed) totalPages else 1
+            val rest = if (reversed || currentPage == totalPages) totalPages % 14 else 0
+            while ((actionList.size - rest) < internalLarge && (currentPage in 1..totalPages)) {
+                val page = if (currentPage != 1) currentPage else null
+                val currentUrl = "$url$yearMonthSelected/$count${page?.let { "/$it" } ?: ""}"
+                when (val result = portalCommunicator.performAction(currentUrl, transform = transform)) {
+                    is Failure -> return Failure(result.throwable)
+                    is Success -> {
+                        actionList.addAll(result.result)
+                    }
+                }
+                currentPage += if (reversed) -1 else 1
+            }
+        }
+        return Success(actionList.take(internalLarge))
+    }
+
     class Builder {
-        private var connectPortalCommunicator: ConnectPortalCommunicator? = null
+        private var portalCommunicator: PortalCommunicator? = null
         private var connectPortalScraper: ConnectPortalScraper? = null
-        private var userPortalCommunicator: UserPortalCommunicator? = null
+        private var userPortalCommunicator: PortalCommunicator? = null
         private var userPortalScraper: UserPortalScraper? = null
 
-        fun connectPortalCommunicator(communicator: ConnectPortalCommunicator): Builder {
-            connectPortalCommunicator = communicator
+        fun connectPortalCommunicator(communicator: PortalCommunicator): Builder {
+            portalCommunicator = communicator
             return this
         }
 
@@ -518,7 +609,7 @@ class ConnectApi(
             return this
         }
 
-        fun userPortalCommunicator(communicator: UserPortalCommunicator): Builder {
+        fun userPortalCommunicator(communicator: PortalCommunicator): Builder {
             userPortalCommunicator = communicator
             return this
         }
@@ -528,28 +619,12 @@ class ConnectApi(
             return this
         }
 
-        private fun createConnectPortalCommunicator(): ConnectPortalCommunicator {
-            return ConnectPortalCommunicatorImpl.builder().build()
-        }
-
-        private fun createConnectPortalScraper(): ConnectPortalScraper {
-            return ConnectPortalScraperImpl.builder().build()
-        }
-
-        private fun createUserPortalCommunicator(): UserPortalCommunicator {
-            return UserPortalCommunicatorImpl.builder().build()
-        }
-
-        private fun createUserPortalScraper(): UserPortalScraper {
-            return UserPortalScrapperImpl()
-        }
-
         fun build(): ConnectApi {
             return ConnectApi(
-                connectPortalCommunicator = connectPortalCommunicator ?: createConnectPortalCommunicator(),
-                connectPortalScraper = connectPortalScraper ?: createConnectPortalScraper(),
-                userPortalCommunicator = userPortalCommunicator ?: createUserPortalCommunicator(),
-                userPortalScraper = userPortalScraper ?: createUserPortalScraper()
+                portalCommunicator = portalCommunicator ?: JsoupPortalCommunicator.Builder().build(),
+                connectPortalScraper = connectPortalScraper ?: ConnectPortalScraperImpl.builder().build(),
+                userPortalCommunicator = userPortalCommunicator ?: JsoupPortalCommunicator.Builder().build(),
+                userPortalScraper = userPortalScraper ?: UserPortalScrapperImpl()
             )
         }
     }

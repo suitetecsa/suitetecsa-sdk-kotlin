@@ -1,9 +1,16 @@
 package cu.suitetecsa.sdk.nauta.core.extensions
 
 import cu.suitetecsa.sdk.nauta.core.*
-import org.jsoup.Connection
+import cu.suitetecsa.sdk.util.ExceptionHandler
 import org.jsoup.nodes.Document
 
+/**
+ * Throws an exception if the document indicates a failure based on the error message.
+ *
+ * @param message The error message to include in the exception.
+ * @param portalManager The portal manager used for error parsing.
+ * @param exceptionHandler The exception handler to handle the exception (optional).
+ */
 internal fun Document.throwExceptionOnFailure(
     message: String,
     portalManager: PortalManager,
@@ -14,29 +21,12 @@ internal fun Document.throwExceptionOnFailure(
 
     error?.let {
         val errors = if (it.startsWith("Se han detectado algunos errores.")) {
-            val subMessages = select("li[class='sub-message']").map { subMessage -> subMessage.text() }
-            subMessages
+            select("li[class='sub-message']").map { subMessage -> subMessage.text() }
         } else {
             listOf(it)
         }
         exceptionHandler?.let { handler ->
             throw handler.handleException(message = message, errors = errors)
-        } ?: run {
-            throw ExceptionHandler.builder().build().handleException(message, errors)
-        }
-    }
-}
-
-internal fun Connection.Response.throwExceptionOnFailure(
-    message: String,
-    exceptionFactory: ExceptionFactory? = null
-) {
-    val statusCode = this.statusCode()
-    if (statusCode !in 200..299 && !(statusCode in 300..399 && this.hasHeader("Location"))) {
-        exceptionFactory?.let {
-            throw ExceptionHandler(it).handleException(message, listOf(this.statusMessage()))
-        } ?: run {
-            throw ExceptionHandler.builder().build().handleException(message, listOf(this.statusMessage()))
-        }
+        } ?: throw ExceptionHandler.builder().build().handleException(message, errors)
     }
 }
