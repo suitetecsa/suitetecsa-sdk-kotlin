@@ -75,7 +75,7 @@ class NautaApi(
                 when (val loginResult = connectPortalCommunicator.getLoginPage(action, data)) {
                     is ResultType.Error -> throw loginResult.throwable
                     is ResultType.Success -> {
-                        val (loginAction, loginData) = connectPortalScraper.parseActionForm(loginResult.result ?: "")
+                        val (loginAction, loginData) = connectPortalScraper.parseLoginForm(loginResult.result ?: "")
                         wlanUserIp = loginData["wlanuserip"] ?: ""
                         csrfHw = loginData["CSRFHW"] ?: ""
                         actionLogin = loginAction
