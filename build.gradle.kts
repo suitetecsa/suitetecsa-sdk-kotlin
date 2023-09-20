@@ -34,7 +34,7 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:4.11.0")
     testImplementation(kotlin("test"))
     testImplementation("io.mockk:mockk:1.13.7")
-    testImplementation("org.mockito:mockito-core:3.12.4")
+    testImplementation("org.mockito:mockito-core:5.5.0")
     testImplementation("org.mockito.kotlin:mockito-kotlin:3.2.0")
     testImplementation("com.google.code.gson:gson:2.10.1")
     implementation(kotlin("stdlib-jdk8"))
