@@ -35,7 +35,7 @@ dependencies {
     testImplementation("io.mockk:mockk:1.13.4")
     testImplementation("com.google.code.gson:gson:2.10.1")
     implementation(kotlin("stdlib-jdk8"))
-    testImplementation("junit:junit:4.13.1")
+    testImplementation("junit:junit:4.13.2")
 }
 
 tasks.test {
