@@ -35,7 +35,7 @@ dependencies {
     testImplementation(kotlin("test"))
     testImplementation("io.mockk:mockk:1.13.7")
     testImplementation("org.mockito:mockito-core:3.12.4")
-    testImplementation("org.mockito.kotlin:mockito-kotlin:3.2.0")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:5.1.0")
     testImplementation("com.google.code.gson:gson:2.10.1")
     implementation(kotlin("stdlib-jdk8"))
     testImplementation("junit:junit:4.13.2")
