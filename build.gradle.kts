@@ -27,7 +27,7 @@ dependencies {
     implementation("org.jsoup:jsoup:1.15.4")
     implementation("junit:junit:4.13.2")
     implementation("com.google.code.gson:gson:2.10.1")
-    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
     implementation("com.github.kittinunf.fuel:fuel:2.3.1")
     implementation("com.squareup.okhttp3:okhttp:4.11.0")
