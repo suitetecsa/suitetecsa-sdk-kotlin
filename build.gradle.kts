@@ -32,7 +32,7 @@ dependencies {
     implementation("com.github.kittinunf.fuel:fuel:2.3.1")
     implementation("com.squareup.okhttp3:okhttp:4.10.0")
     testImplementation(kotlin("test"))
-    testImplementation("io.mockk:mockk:1.13.4")
+    testImplementation("io.mockk:mockk:1.13.7")
     testImplementation("com.google.code.gson:gson:2.10.1")
     implementation(kotlin("stdlib-jdk8"))
     testImplementation("junit:junit:4.13.1")
