@@ -30,7 +30,7 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.4")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0")
     implementation("com.github.kittinunf.fuel:fuel:2.3.1")
-    implementation("com.squareup.okhttp3:okhttp:4.10.0")
+    implementation("com.squareup.okhttp3:okhttp:4.11.0")
     testImplementation(kotlin("test"))
     testImplementation("io.mockk:mockk:1.13.7")
     testImplementation("com.google.code.gson:gson:2.10.1")
