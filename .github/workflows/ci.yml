@@ -26,6 +26,6 @@ jobs:
           cache: 'gradle'
 
       - name: Build with Gradle
-        uses: gradle/gradle-build-action@b32df40b6abdd4a47892e75b9780e0002c06de1b
+        uses: gradle/gradle-build-action@5e3952da922a15eef8cfe4f027fe44d2a34c8fbb
         with:
           arguments: build :test
